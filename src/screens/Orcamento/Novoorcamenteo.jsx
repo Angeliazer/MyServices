@@ -1,22 +1,21 @@
-import { View, Text, TouchableOpacity, ScrollView, Keyboard, Image, Alert } from 'react-native'
+import {View, Text, TouchableOpacity, ScrollView, Image, Alert} from 'react-native'
 import icones from '../../constants/icones'
-import { styles } from './novoorcamento.style'
+import {styles} from './novoorcamento.style'
 import Titulo from '../../components/titulo/titulo'
 import Header from '../../components/header/header'
-import { AuthContext } from '../../context/Auth'
-import { useContext, useState, useRef } from 'react'
+import {AuthContext} from '../../context/Auth'
+import {useContext, useState, useRef} from 'react'
 import TextBox from '../../components/textBox/textBox'
-import { Button } from '../../components/button/buton'
+import {Button} from '../../components/button/buton'
 import api from '../../axios-instance'
-import { LoadStorage } from '../../storage/storage'
-import { Orcamento } from '../../models/model.orcamento/model.orcamento'
-// import { ConverteValor } from '../../funcoes/funcaoConversao'
+import {Orcamento} from '../../models/model.orcamento/model.orcamento'
 
 const Novoorcamento = (props) => {
 
     const item = props.route.params
 
-    const { apelido } = useContext(AuthContext)
+    const {user} = useContext(AuthContext)
+
     const [quant, setQuant] = useState('')
     const [descricao, setDescricao] = useState('')
     const [empreitada, setEmpreitada] = useState(false)
@@ -50,13 +49,11 @@ const Novoorcamento = (props) => {
             if (quantRef.current) {
                 quantRef.current.focus()
             }
-        }
-        else {
+        } else {
             setQuant('1')
             setEmpreitada(true)
             setLabelQuant('Nro')
             setLabelValor('Vlr. Emp.')
-
         }
         setTipo(forma)
     }
@@ -72,13 +69,11 @@ const Novoorcamento = (props) => {
         setValor(nroFormatado)
     }
 
-
     const FormataTotal = (totalItem) => {
         let vlr = parseFloat(totalItem)
         vlr = vlr.toFixed(2).replace('.', ',')
         vlr = parseFloat(vlr.replace(',', '.')).toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            minimumFractionDigits: 2, maximumFractionDigits: 2
         })
         return vlr
     }
@@ -108,7 +103,9 @@ const Novoorcamento = (props) => {
             setTotal(prevTotal => prevTotal + vlr_total_item)  // Corrigido para incrementar corretamente
             setMostra(FormataTotal(total + vlr_total_item))  // Mostrando o valor atualizado
 
-            setData(prevData => [...prevData, { item: id, descricao, quant: parseInt(quant), tipo, valor: vlr_unitario_item, total: vlr_total_item }])
+            setData(prevData => [...prevData, {
+                item: id, descricao, quant: parseInt(quant), tipo, valor: vlr_unitario_item, total: vlr_total_item
+            }])
             setId(prevId => (prevId + 1))
 
             setQuant(0)
@@ -142,61 +139,52 @@ const Novoorcamento = (props) => {
         const idUsuario = props.route.params.idUsuario
 
         //....Monta Objeto para Api
-        const orca = new Orcamento()
+        const orcamento = new Orcamento()
 
-        orca.idCliente = idCliente
-        orca.idUsuario = idUsuario
-        orca.vlrTotal = total
-        orca.data = new Date().toISOString().split('T')[0];
-        orca.items = []
+        orcamento.idCliente = idCliente
+        orcamento.idUsuario = idUsuario
+        orcamento.vlrTotal = total
+        orcamento.data = new Date().toISOString().split('T')[0]
+        orcamento.servico = 'N'
+        orcamento.items = []
 
         for (let x = 0; x < data.length; x++) {
 
             // Itens enviados para Api { descricao, valor, total, quant, tipo }
             // Não envia o par 'item : nro' - > gerado automaticamente na hora de gravar os dados na Api
-            orca.items.push({
+            orcamento.items.push({
                 descricao: data[x].descricao,
-                valor: data[x].valor, total: data[x].total, quant: data[x].quant, tipo: data[x].tipo
+                valor: data[x].valor,
+                total: data[x].total,
+                quant: data[x].quant,
+                tipo: data[x].tipo
             })
         }
 
         try {
-            const usuario = await LoadStorage()
-
-            const token = usuario.token
-
-            const response = await api.post('/orcamento/Add', orca, { headers: { 'Authorization': `Bearer ${token}` } })
+            const response = await api.post('/orcamento/Add', orcamento, {headers: {'Authorization': `Bearer ${user.token}`}})
 
             if (response.status == 201) {
-                Alert.alert(
-                    'Atenção',
-                    'Registro Gravado com Sucesso...!',
-                    [{
-                        text: 'Ok',
-                        onPress: () => navigation.navigate('Orcamento')
-                    }]
-                )
+                Alert.alert('Atenção', 'Registro Gravado com Sucesso...!', [{
+                    text: 'Ok', onPress: () => navigation.navigate('Orcamento')
+                }])
             }
 
         } catch (error) {
             {
-                Alert.alert(
-                    'Erro',
-                    'Não foi possível gravar o registro, tente mais tarde!',
-                    [{
-                        text: 'Ok',
-                        onPress: () => navigation.navigate('Orcamento')
-                    }]
-                )
+                Alert.alert('Erro', 'Não foi possível gravar o registro, tente mais tarde!', [{
+                    text: 'Ok', onPress: () => navigation.navigate('Orcamento')
+                }])
             }
         }
 
     }
 
     return <View style={styles.container}>
-        <Header texto={apelido} />
+        <Header />
 
-        <Titulo titulo={'Novo Orçamento'} image={icones.orca2} back={icones.back} tela={'Orcamento'} navigation={props.navigation} item={item} />
+        <Titulo titulo={'Novo Orçamento'} image={icones.orca2} back={icones.back} tela={'Orcamento'}
+                navigation={props.navigation} item={item}/>
 
         <View style={styles.containerPrincipal}>
 
@@ -210,21 +198,21 @@ const Novoorcamento = (props) => {
             </View>
 
             <View style={styles.boxDescricao}>
-                <TextBox label='Descrição'
-                    placeholder='Descrição do Servico...'
-                    maxLength={50}
-                    value={descricao}
-                    onChangeText={(e) => setDescricao(e)}
-                    referencia={descricaoRef}
-                    onFocus={Onfocus}
+                <TextBox label="Descrição"
+                         placeholder="Descrição do Servico..."
+                         maxLength={50}
+                         value={descricao}
+                         onChangeText={(e) => setDescricao(e)}
+                         referencia={descricaoRef}
+                         onFocus={Onfocus}
                 />
             </View>
 
             <View style={styles.textClick}>
                 <Text style={styles.textCobranca}>
-                    <Image source={icones.setaEsquerda} style={styles.setas} />
+                    <Image source={icones.setaEsquerda} style={styles.setas}/>
                     Click Forma de Cobrança (FC)
-                    <Image source={icones.setaDireita} style={styles.setas} />
+                    <Image source={icones.setaDireita} style={styles.setas}/>
                 </Text>
             </View>
 
@@ -256,39 +244,38 @@ const Novoorcamento = (props) => {
             <View style={styles.boxServico}>
 
                 <View>
-                    <TextBox label='FC'
-                        value={tipo}
-                        alinha
-                        editable={false}
-                        onChangeText={(e) => setTipo(e)}
+                    <TextBox label="FC"
+                             value={tipo}
+                             alinha
+                             editable={false}
+                             onChangeText={(e) => setTipo(e)}
                     />
                 </View>
 
                 <View style={styles.quant}>
                     <TextBox label={labelQuant}
-                        maxLength={5}
-                        value={quant}
-                        tipoTeclado='number-pad'
-                        alinha
-                        onChangeText={(e) => setQuant(e)}
-                        editable={!empreitada}
-                        referencia={quantRef}
+                             maxLength={5}
+                             value={quant}
+                             tipoTeclado="number-pad"
+                             alinha
+                             onChangeText={(e) => setQuant(e)}
+                             editable={!empreitada}
+                             referencia={quantRef}
                     />
                 </View>
 
                 <View style={styles.valor}>
                     <TextBox label={labelValor}
-                        maxLength={12}
-                        value={valor}
-                        tipoTeclado='number-pad'
-                        alinha
-                        onChangeText={FormataNro} />
+                             maxLength={12}
+                             value={valor}
+                             tipoTeclado="number-pad"
+                             alinha
+                             onChangeText={FormataNro}/>
                 </View>
 
                 <TouchableOpacity style={styles.buttonAdiciona} onPress={AdicionaOrc}>
                     <Text style={styles.text}>+ Adiciona</Text>
                 </TouchableOpacity>
-
             </View>
 
         </View>
@@ -296,8 +283,7 @@ const Novoorcamento = (props) => {
 
         <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false} ins>
 
-            {data.map((item) => (
-                <View key={item.item} style={styles.linha}>
+            {data.map((item) => (<View key={item.item} style={styles.linha}>
                     <View style={styles.space35}>
                         <Text style={styles.textDescricao}>
                             {item.descricao}
@@ -323,10 +309,9 @@ const Novoorcamento = (props) => {
                     </View>
 
                     <TouchableOpacity onPress={() => DeletaItem(item)}>
-                        <Image source={icones.deletar} style={styles.logoLixeira} />
+                        <Image source={icones.deletar} style={styles.logoLixeira}/>
                     </TouchableOpacity>
-                </View>
-            ))}
+                </View>))}
         </ScrollView>
 
         <View style={styles.containerFooter}>
@@ -335,8 +320,8 @@ const Novoorcamento = (props) => {
                     Total: R$ {mostra}
                 </Text>
             </View>
-            <Button texto='Salva Orçamento' onPress={SalvarOrcamento} colorRed={false}
-                isLoading={data.length == 0 ? true : false} ></Button>
+            <Button texto="Salva Orçamento" onPress={SalvarOrcamento} colorRed={false}
+                    isLoading={data.length == 0 ? true : false}></Button>
         </View>
     </View>
 }

@@ -24,10 +24,10 @@ const Listaorcamento = (props) => {
     const data = (new Date().toLocaleString('pt-BR')).substring(0, 10)
 
     useEffect(() => {
-        // setDataInicial(data)
-        // setDataFinal(data)
+        setDataInicial('')
+        setDataFinal('')
         LerOrcamentos()
-    }, []);
+    }, [])
 
     const LerOrcamentos = async () => {
         try {
@@ -35,10 +35,10 @@ const Listaorcamento = (props) => {
                 Alert.alert('Erro', 'Problemas com o Token de Autenticação...!', [{
                     text: 'OK',
                     onPress: () => navigation.navigate('Home')
-                }]);
+                }])
             }
             setLoading(true)
-            const response = await api.get(`/orcamentos/`, {headers: {'Authorization': `Bearer ${user.token}`}});
+            const response = await api.get(`/orcamentos/`, {headers: {'Authorization': `Bearer ${user.token}`}})
 
             response.data.sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data da maior para a menor
             setDataOrcamento(response.data)
@@ -48,9 +48,9 @@ const Listaorcamento = (props) => {
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK',
                 onPress: () => props.navigation.navigate('Home')
-            }]);
+            }])
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     }
 
@@ -61,7 +61,7 @@ const Listaorcamento = (props) => {
                 Alert.alert('Erro', 'Problemas com o Token de Autenticação...!', [{
                     text: 'OK',
                     onPress: () => navigation.navigate('Home')
-                }]);
+                }])
             }
 
             let dataI = dataInicial
@@ -79,7 +79,7 @@ const Listaorcamento = (props) => {
             const response = await api.get(`/orcamentos/datas`, {
                 params: {dataInicial: dataI, dataFinal: dataF},
                 headers: {'Authorization': `Bearer ${user.token}`}
-            });
+            })
 
             response.data.sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data da maior para a menor
             setDataOrcamento(response.data)
@@ -91,8 +91,6 @@ const Listaorcamento = (props) => {
         } finally {
             setLoading(false)
         }
-
-
     }
 
 
@@ -102,7 +100,6 @@ const Listaorcamento = (props) => {
 
     return (
         <>
-
             {loading && (
                 <View style={styles.containerLoading}>
                     <ActivityIndicator size="large" color={COLORS.red}/>
@@ -120,7 +117,7 @@ const Listaorcamento = (props) => {
                             A data digitada não é válida..!
                         </Text>
                         <View style={styles.boxButton}>
-                            <Button texto='Voltar' onPress={Voltar}></Button>
+                            <Button texto="Voltar" onPress={Voltar}></Button>
                         </View>
                     </View>
                 </View>
