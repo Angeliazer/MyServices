@@ -3,7 +3,6 @@ import { styles } from './mancliente.style.js'
 import Header from '../../components/header/header.jsx'
 import { useEffect, useState, useContext } from 'react'
 import api from '../../axios-instance.js'
-import { LoadStorage } from '../../storage/storage.js'
 import icones from '../../constants/icones.js'
 import TextBox from '../../components/textBox/textBox.jsx'
 import { Button } from '../../components/button/buton.jsx'
@@ -79,11 +78,7 @@ function Mancliente(props) {
     }
 
     const PesquisaNome = async () => {
-
         try {
-
-            const user = await LoadStorage()
-
             if (nomePesq.trim() === '') {
                 await LerClientes(user.token)
                 return

@@ -1,26 +1,29 @@
-import {ScrollView, Text, View, ActivityIndicator, Image, TouchableOpacity} from 'react-native'
+import {ScrollView, Text, View, ActivityIndicator, Image, TouchableOpacity, Alert} from 'react-native'
 import {styles} from '../Orcamento/orcamento.style.js'
 import {useContext, useEffect, useState} from 'react'
 import Header from '../../components/header/header.jsx'
 import Titulo from '../../components/titulo/titulo.jsx'
 import icones from '../../constants/icones.js'
 import {AuthContext} from '../../context/Auth.js'
-import {LoadStorage} from '../../storage/storage.js'
 import api from '../../axios-instance.js'
 import {COLORS} from '../../constants/theme.js'
 import {ConverteData, ConverteValor} from '../../funcoes/funcaoConversao.js'
 import {Button} from '../../components/button/buton.jsx'
-
+import {Servico} from "../../models/model.servico/model.servico"
 
 const Orcamento = (props) => {
 
-    const {data, setData, item, setItem, user} = useContext(AuthContext)
+    const {data, setData, item, user} = useContext(AuthContext)
 
     const navigation = props.navigation
 
     const [loading, setLoading] = useState(false)
 
     const [service, setService] = useState(false)
+
+    const [deleta, setDeleta] = useState(false)
+
+    const [itemSelecionado, setItemSelecionado] = useState()
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -46,23 +49,76 @@ const Orcamento = (props) => {
 
             setData(response.data)
         } catch {
-            setLoading(false)
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK', onPress: () => props.navigation.navigate('Mancliente')
             }])
         } finally {
             setLoading(false)
         }
-
     }
 
-    const SaveService = () => {    //Transforma o Orçamento em serviço a ser executado....
+    const SaveItem = async () => {
         setService(false)
+        setLoading(true)
+        try {
+            const servico = new Servico()
+            servico.idOrcamento = itemSelecionado.idOrcamento
+            servico.idCliente = itemSelecionado.idCliente
+            servico.idUsuario = itemSelecionado.idUsuario
+            servico.dataIni = new Date().toISOString().split('T')[0]
+            servico.dataFim = null
+            servico.situacao = 'A'
+            servico.total = itemSelecionado.vlrTotal
+            servico.saldo = 0.00
 
+            const response = await api.post(`/servicos/add`, servico, {headers: {'Authorization': `Bearer ${user.token}`}})
 
-
-
+            Alert.alert(
+                'Atenção.',
+                'Orçamento Convertido em Serviço com sucesso!',
+                [{text: 'Ok'}]
+            )
+            LerOrcamentos()   //Atualiza Tela....
+        } catch (e)  {
+             console.log(e)
+            Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
+                text: 'OK', onPress: () => props.navigation.navigate('Mancliente')
+            }])
+        } finally {
+            setLoading(false)
+        }
     }
+
+    const GetItem = (index) => {
+        setItemSelecionado(index)
+        setService(true)
+    }
+
+    const SelectItem = (index) => {
+        setItemSelecionado(index)
+        setDeleta(true)
+    }
+
+    const DeleteItem = async () => {
+        setDeleta(false)
+        console.log(itemSelecionado)
+        try {
+
+            setLoading(true)
+            const response = await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelecionado.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
+            Alert.alert(
+                'Orçamento excluído com sucesso!',
+                '',
+                [{text: 'OK'}]
+            )
+            LerOrcamentos()
+        } catch (e) {
+            
+        } finally {
+            setLoading(false)
+        }
+    }
+
 
     return <View style={styles.container}>
 
@@ -76,12 +132,36 @@ const Orcamento = (props) => {
                 </View>
 
                 <View style={styles.boxButton}>
-                    <TouchableOpacity style={styles.boxNao} onPress={()=>setService(false)}>
+                    <TouchableOpacity style={styles.boxNao} onPress={() => setService(false)}>
                         <Text style={styles.textButton}>
                             Não
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.boxSim} onPress={SaveService}>
+                    <TouchableOpacity style={styles.boxSim} onPress={SaveItem}>
+                        <Text style={styles.textButton}>
+                            Sim
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>)}
+
+        {deleta && (<View style={styles.containerLoading}>
+
+            <View style={styles.boxMensagem}>
+                <View>
+                    <Text style={styles.mensagem}>
+                        <Text>Confirma Exclusão do Orçamento {itemSelecionado.idOrcamento} ?</Text>
+                    </Text>
+                </View>
+
+                <View style={styles.boxButton}>
+                    <TouchableOpacity style={styles.boxNao} onPress={() => setDeleta(false)}>
+                        <Text style={styles.textButton}>
+                            Não
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.boxSim} onPress={DeleteItem}>
                         <Text style={styles.textButton}>
                             Sim
                         </Text>
@@ -125,12 +205,15 @@ const Orcamento = (props) => {
                                 <Image source={icones.email4} style={styles.icones}/>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.icones}>
-                                <Image source={icones.deletar} style={styles.icones}/>
-                            </TouchableOpacity>
+                            {item.servico === 'N' ?
+                                <TouchableOpacity style={styles.icones} onPress={() => SelectItem(item)}>
+                                    <Image source={icones.deletar} style={styles.icones}/>
+                                </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
+                                    <Image source={icones.deletar} style={styles.iconesOpacity}/>
+                                </TouchableOpacity>}
 
                             {item.servico === 'N' ?
-                                <TouchableOpacity style={styles.icones} onPress={() => setService(true)}>
+                                <TouchableOpacity style={styles.icones} onPress={() => GetItem(item)}>
                                     <Image source={icones.servico} style={styles.icones}/>
                                 </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
                                     <Image source={icones.servico} style={styles.iconesOpacity}/>

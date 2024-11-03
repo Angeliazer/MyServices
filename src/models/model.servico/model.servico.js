@@ -1,9 +1,9 @@
 export class Servico {
-    constructor(idUsuario, idCliente, idOrcamento, dataInicio, dataFim, situacao, total, saldo) {
+    constructor(idUsuario, idCliente, idOrcamento, dataIni, dataFim, situacao, total, saldo) {
         this.idUsuario = idUsuario
         this.idCliente = idCliente
         this.idOrcamento = idOrcamento
-        this.dataInicio = dataInicio
+        this.dataIni = dataIni
         this.dataFim = dataFim
         this.situacao = situacao
         this.total = total
