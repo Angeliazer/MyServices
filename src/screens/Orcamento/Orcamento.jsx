@@ -10,12 +10,13 @@ import {COLORS} from '../../constants/theme.js'
 import {ConverteData, ConverteValor} from '../../funcoes/funcaoConversao.js'
 import {Button} from '../../components/button/buton.jsx'
 import {Servico} from "../../models/model.servico/model.servico"
+import {useNavigation} from "@react-navigation/native"
 
 const Orcamento = (props) => {
 
-    const {data, setData, item, user} = useContext(AuthContext)
+    const navigation = useNavigation()
 
-    const navigation = props.navigation
+    const {data, setData, item, user} = useContext(AuthContext)
 
     const [loading, setLoading] = useState(false)
 
@@ -94,6 +95,10 @@ const Orcamento = (props) => {
         setService(true)
     }
 
+    const MostraOrcamento = (index) => {
+        navigation.navigate('DisplayOrcamento')
+    }
+
     const SelectItem = (index) => {
         setItemSelecionado(index)
         setDeleta(true)
@@ -101,7 +106,6 @@ const Orcamento = (props) => {
 
     const DeleteItem = async () => {
         setDeleta(false)
-        console.log(itemSelecionado)
         try {
 
             setLoading(true)
@@ -119,18 +123,14 @@ const Orcamento = (props) => {
         }
     }
 
-
     return <View style={styles.container}>
-
         {service && (<View style={styles.containerLoading}>
-
             <View style={styles.boxMensagem}>
                 <View>
                     <Text style={styles.mensagem}>
                         Confirma Execução do Serviço?
                     </Text>
                 </View>
-
                 <View style={styles.boxButton}>
                     <TouchableOpacity style={styles.boxNao} onPress={() => setService(false)}>
                         <Text style={styles.textButton}>
@@ -217,6 +217,13 @@ const Orcamento = (props) => {
                                     <Image source={icones.servico} style={styles.icones}/>
                                 </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
                                     <Image source={icones.servico} style={styles.iconesOpacity}/>
+                                </TouchableOpacity>}
+
+                            {item.servico === 'N' ?
+                                <TouchableOpacity style={styles.icones} onPress={() => MostraOrcamento(item)}>
+                                    <Image source={icones.expandir} style={styles.icones}/>
+                                </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
+                                    <Image source={icones.expandir} style={styles.iconesOpacity}/>
                                 </TouchableOpacity>}
                         </View>
                     </View>

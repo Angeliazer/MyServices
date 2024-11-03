@@ -26,13 +26,12 @@ function Mancliente(props) {
             await LerClientes()
         }
 
-        const unsubscribe = navigation.addListener('focus', () => {
+        navigation.addListener('focus', () => {
             setNomePesq('')
             fetchData()
         })
 
         // Limpar o listener ao desmontar o componente
-        return unsubscribe;
     }, [navigation]);
 
     const LerClientes = async () => {
@@ -83,7 +82,6 @@ function Mancliente(props) {
                 await LerClientes(user.token)
                 return
             }
-
             const response = await api.get(`/clientes/nome/?nome=${nomePesq}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
 
             if (response.data.length == 0) {
