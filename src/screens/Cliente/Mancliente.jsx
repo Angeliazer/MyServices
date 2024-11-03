@@ -6,7 +6,7 @@ import api from '../../axios-instance.js'
 import icones from '../../constants/icones.js'
 import TextBox from '../../components/textBox/textBox.jsx'
 import { Button } from '../../components/button/buton.jsx'
-import { AuthContext } from '../../../src/context/Auth.js'
+import { AuthContext } from '../../context/Auth.js'
 import Deletarcliente from '../../screens/Cliente/Deletarcliente.jsx'
 import Titulo from "../../components/titulo/titulo.jsx"
 import { COLORS } from '../../constants/theme.js'

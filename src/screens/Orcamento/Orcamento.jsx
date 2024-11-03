@@ -71,7 +71,7 @@ const Orcamento = (props) => {
             servico.total = itemSelecionado.vlrTotal
             servico.saldo = 0.00
 
-            const response = await api.post(`/servicos/add`, servico, {headers: {'Authorization': `Bearer ${user.token}`}})
+            await api.post(`/servicos/add`, servico, {headers: {'Authorization': `Bearer ${user.token}`}})
 
             Alert.alert(
                 'Atenção.',
@@ -105,7 +105,7 @@ const Orcamento = (props) => {
         try {
 
             setLoading(true)
-            const response = await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelecionado.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
+            await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelecionado.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
             Alert.alert(
                 'Orçamento excluído com sucesso!',
                 '',
