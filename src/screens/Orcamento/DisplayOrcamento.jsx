@@ -102,7 +102,7 @@ const DisplayOrcamento = (props) => {
     }
 
     const AdicionaOrc = () => {
-        if (descricao != '' && valor != '' && quant != '' && tipo != '') {
+        if (descricao !== '' && valor !== 0 && quant !== '' && tipo !== '') {
 
             vlr_unitario_item = StrToDec(valor)
             vlr_total_item = StrToDecTotalItem(quant, valor)
@@ -161,7 +161,7 @@ const DisplayOrcamento = (props) => {
         try {
             const response = await api.put('/orcamentos/update', orcamento, {headers: {'Authorization': `Bearer ${user.token}`}})
 
-            if (response.status == 200) {
+            if (response.status === 200) {
                 Alert.alert('Atenção', 'Orçamento Atualizado com Sucesso...!', [{
                     text: 'Ok', onPress: () => navigation.navigate('Orcamento')
                 }])
@@ -178,7 +178,7 @@ const DisplayOrcamento = (props) => {
     return <View style={styles.container}>
         <Header />
 
-        <Titulo titulo={'Manutenção Orçamento'} image={icones.orca2} back={icones.back} tela={'Orcamento'}
+        <Titulo titulo={`Orçamento : ${itemSelected.idOrcamento}`} image={icones.orca2} back={icones.back} tela={'Orcamento'}
                 navigation={props.navigation}/>
 
         <View style={styles.containerPrincipal}>
@@ -316,7 +316,7 @@ const DisplayOrcamento = (props) => {
                 </Text>
             </View>
             <Button texto="Atualiza Orçamento" onPress={UpdateOrcamento} colorRed={false}
-                    isLoading={data.length == 0 ? true : false}></Button>
+                    isLoading={data.length === 0}></Button>
         </View>
     </View>
 }

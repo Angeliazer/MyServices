@@ -14,7 +14,7 @@ cabecalho:{
 
 titulo:{
     fontSize: FONT_SIZE.lg,
-    color: COLORS.gray
+    color: COLORS.blueNovo
 },
 
 logoTipo: {

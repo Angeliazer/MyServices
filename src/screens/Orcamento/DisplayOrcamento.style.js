@@ -83,13 +83,13 @@ export const styles = {
 
     titulo: {
         padding: 5,
-        fontSize: FONT_SIZE.lg,
+        fontSize: FONT_SIZE.xm,
         color: COLORS.gray,
     },
 
     nome: {
-        fontSize: FONT_SIZE.lg,
-        color: COLORS.blue,
+        fontSize: FONT_SIZE.xm,
+        color: COLORS.black,
     },
 
     quant: {

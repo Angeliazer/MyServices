@@ -24,11 +24,9 @@ const Orcamento = (props) => {
     const navigation = props.navigation
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            LerOrcamentos
+        return  navigation.addListener('focus', () => {
+            LerOrcamentos()
         })
-        // Limpar o listener ao desmontar o componente
-        return unsubscribe
 
     }, [navigation])
 

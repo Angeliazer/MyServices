@@ -8,7 +8,6 @@ export const styles = {
 
   containerScroll: {
     backgroundColor: COLORS.white,
-    // flex: 1,
     width: "95%",
     marginRight: "auto",
     marginLeft: "auto",

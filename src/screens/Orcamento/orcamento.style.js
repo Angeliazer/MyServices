@@ -65,12 +65,12 @@ export const styles = {
 
     text: {
         color: COLORS.gray,
-        fontSize: FONT_SIZE.lg,
+        fontSize: FONT_SIZE.xm,
     },
 
     nome: {
         color: COLORS.black,
-        fontSize: FONT_SIZE.lg,
+        fontSize: FONT_SIZE.xm,
     },
 
     boxTitulo: {
