@@ -5,6 +5,9 @@ O objetivo foi criar um app para realizar Orçamentos.
 
 ![Imagem de Exemplo](src/assets/clientes.png)
 
+<img src="src/assets/clientes.png" alt="Imagem de Exemplo" width="300"/>
+
+
 ## Tabela de Conteúdo
 
 1. Clone o repositório
