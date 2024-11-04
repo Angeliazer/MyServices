@@ -276,7 +276,7 @@ const DisplayOrcamento = (props) => {
         </View>
 
 
-        <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false} ins>
+        <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
 
             {data.map((item) => (<View key={item.item} style={styles.linha}>
                 <View style={styles.space35}>
