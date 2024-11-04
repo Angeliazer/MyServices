@@ -3,8 +3,7 @@
 Esse projeto foi desenvolvido, para mostrar meus conhecimentos em react native...
 O objetivo foi criar um app para realizar Orçamentos.
 
-![/src/assets/login.png]
-(/src/assets/login.png)
+![Imagem de Exemplo](src/assets/cliente.png)
 
 ## Tabela de Conteúdo
 
