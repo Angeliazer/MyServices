@@ -39,7 +39,6 @@ const Novoorcamento = (props) => {
     let vlr_total_item = 0
 
     const FormaCobranca = (forma) => {
-
         if (forma !== 'EP') {
             setQuant('')
             setEmpreitada(false)
@@ -90,8 +89,8 @@ const Novoorcamento = (props) => {
             vlr_unitario_item = StrToDec(valor)
             vlr_total_item = StrToDecTotalItem(quant, valor)
 
-            setTotal(prevTotal => prevTotal + vlr_total_item)  // Corrigido para incrementar corretamente
-            setMostra(ConverteValor(total + vlr_total_item))   // Mostrando o valor atualizado
+            setTotal(prevTotal => prevTotal + vlr_total_item)
+            setMostra(ConverteValor(total + vlr_total_item))   // Mostra o valor atualizado
 
             setData(prevData => [...prevData, {
                 item: id, descricao, quantidade: parseInt(quant), tipo, valor: vlr_unitario_item, total: vlr_total_item
@@ -101,7 +100,6 @@ const Novoorcamento = (props) => {
             setQuant(0)
             setValor('')
             setTipo('')
-
             if (descricaoRef.current) {
                 descricaoRef.current.focus()
             }
@@ -260,8 +258,6 @@ const Novoorcamento = (props) => {
             </View>
 
         </View>
-
-
         <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false} ins>
 
             {data.map((item) => (<View key={item.item} style={styles.linha}>

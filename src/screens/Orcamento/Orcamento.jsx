@@ -24,8 +24,13 @@ const Orcamento = (props) => {
     const navigation = props.navigation
 
     useEffect(() => {
-        LerOrcamentos()
-    }, [])
+        const unsubscribe = navigation.addListener('focus', () => {
+            LerOrcamentos
+        })
+        // Limpar o listener ao desmontar o componente
+        return unsubscribe
+
+    }, [navigation])
 
     const LerOrcamentos = async () => {
         try {
@@ -71,8 +76,8 @@ const Orcamento = (props) => {
                 [{text: 'Ok'}]
             )
             LerOrcamentos()   //Atualiza Tela....
-        } catch (e) {
-            console.log(e)
+        } catch (e)  {
+             console.log(e)
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK', onPress: () => navigation.navigate('Mancliente')
             }])
@@ -100,10 +105,7 @@ const Orcamento = (props) => {
         setDeleta(false)
         try {
             setLoading(true)
-            await api.delete(`/orcamentos/delete`, {
-                params: {idOrcamento: `${itemSelected.idOrcamento}`},
-                headers: {'Authorization': `Bearer ${user.token}`}
-            })
+            await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelected.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
             Alert.alert(
                 'Orçamento excluído com sucesso!',
                 '',

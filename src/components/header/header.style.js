@@ -1,41 +1,39 @@
 import {COLORS, FONT_SIZE} from '../../constants/theme.js'
-export const styles = { 
 
-    container:{
+export const styles = {
+
+    container: {
         backgroundColor: COLORS.blueNovo,
     },
-    
-   logoTipo: {
+
+    logoTipo: {
         width: 32,
         height: 32,
-        padding: 20,
-   },
+        paddingTop: 5,
+    },
 
-   usuario: {
+    usuario: {
         fontSize: FONT_SIZE.md,
-        flexDirection: 'row',
-        textAlign: 'left',
         fontStyle: 'italic',
         color: COLORS.white,
         fontWeight: 'bold',
-        paddingTop: 5,
-        paddingBottom: 5,
         textAlign: 'right',
+        paddingBottom: 2,
         paddingRight: 5
-   },
+    },
 
-   texto: {
+    texto: {
         fontSize: FONT_SIZE.lg,
-        color: COLORS.blue,
+        color: COLORS.white,
         fontWeight: 'bold',
     },
 
     headers: {
         flexDirection: 'row',
         backgroundColor: COLORS.blueNovo,
-        alignItems: 'space-between',
-        paddingTop: 15,
-        paddingRight: 20
+        alignItems: "space-between",
+        paddingRight: 10,
+        paddingBottom: 10,
     }
 
 }
