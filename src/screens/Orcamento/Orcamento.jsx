@@ -1,5 +1,5 @@
 import {ScrollView, Text, View, ActivityIndicator, Image, TouchableOpacity, Alert} from 'react-native'
-import {styles} from '../Orcamento/orcamento.style.js'
+import {styles} from './orcamento.style.js'
 import {useContext, useEffect, useState} from 'react'
 import Header from '../../components/header/header.jsx'
 import Titulo from '../../components/titulo/titulo.jsx'
@@ -10,7 +10,6 @@ import {COLORS} from '../../constants/theme.js'
 import {ConverteData, ConverteValor} from '../../funcoes/funcaoConversao.js'
 import {Button} from '../../components/button/buton.jsx'
 import {Servico} from "../../models/model.servico/model.servico"
-import {useNavigation} from "@react-navigation/native"
 
 const Orcamento = (props) => {
 
@@ -25,14 +24,8 @@ const Orcamento = (props) => {
     const navigation = props.navigation
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            LerOrcamentos()
-        })
-
-        // Limpar o listener ao desmontar o componente
-        return unsubscribe
-
-    }, [navigation])
+        LerOrcamentos()
+    }, [])
 
     const LerOrcamentos = async () => {
         try {
@@ -78,8 +71,8 @@ const Orcamento = (props) => {
                 [{text: 'Ok'}]
             )
             LerOrcamentos()   //Atualiza Tela....
-        } catch (e)  {
-             console.log(e)
+        } catch (e) {
+            console.log(e)
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK', onPress: () => navigation.navigate('Mancliente')
             }])
@@ -107,7 +100,10 @@ const Orcamento = (props) => {
         setDeleta(false)
         try {
             setLoading(true)
-            await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelected.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
+            await api.delete(`/orcamentos/delete`, {
+                params: {idOrcamento: `${itemSelected.idOrcamento}`},
+                headers: {'Authorization': `Bearer ${user.token}`}
+            })
             Alert.alert(
                 'Orçamento excluído com sucesso!',
                 '',
@@ -115,7 +111,7 @@ const Orcamento = (props) => {
             )
             LerOrcamentos()
         } catch (e) {
-            
+
         } finally {
             setLoading(false)
         }
