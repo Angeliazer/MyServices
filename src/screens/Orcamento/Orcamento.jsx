@@ -14,9 +14,7 @@ import {useNavigation} from "@react-navigation/native"
 
 const Orcamento = (props) => {
 
-    const navigation = useNavigation()
-
-    const {data, setData, item, user} = useContext(AuthContext)
+    const {data, setData, item, user, itemSelected, setItemSelected} = useContext(AuthContext)
 
     const [loading, setLoading] = useState(false)
 
@@ -24,7 +22,7 @@ const Orcamento = (props) => {
 
     const [deleta, setDeleta] = useState(false)
 
-    const [itemSelecionado, setItemSelecionado] = useState()
+    const navigation = props.navigation
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -51,7 +49,7 @@ const Orcamento = (props) => {
             setData(response.data)
         } catch {
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
-                text: 'OK', onPress: () => props.navigation.navigate('Mancliente')
+                text: 'OK', onPress: () => navigation.navigate('Mancliente')
             }])
         } finally {
             setLoading(false)
@@ -63,13 +61,13 @@ const Orcamento = (props) => {
         setLoading(true)
         try {
             const servico = new Servico()
-            servico.idOrcamento = itemSelecionado.idOrcamento
-            servico.idCliente = itemSelecionado.idCliente
-            servico.idUsuario = itemSelecionado.idUsuario
+            servico.idOrcamento = itemSelected.idOrcamento
+            servico.idCliente = itemSelected.idCliente
+            servico.idUsuario = itemSelected.idUsuario
             servico.dataIni = new Date().toISOString().split('T')[0]
             servico.dataFim = null
             servico.situacao = 'A'
-            servico.total = itemSelecionado.vlrTotal
+            servico.total = itemSelected.vlrTotal
             servico.saldo = 0.00
 
             await api.post(`/servicos/add`, servico, {headers: {'Authorization': `Bearer ${user.token}`}})
@@ -83,7 +81,7 @@ const Orcamento = (props) => {
         } catch (e)  {
              console.log(e)
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
-                text: 'OK', onPress: () => props.navigation.navigate('Mancliente')
+                text: 'OK', onPress: () => navigation.navigate('Mancliente')
             }])
         } finally {
             setLoading(false)
@@ -91,25 +89,25 @@ const Orcamento = (props) => {
     }
 
     const GetItem = (index) => {
-        setItemSelecionado(index)
+        setItemSelected(index)
         setService(true)
     }
 
     const MostraOrcamento = (index) => {
-        navigation.navigate('DisplayOrcamento')
+        setItemSelected(index)
+        navigation.navigate('DisplayOrcamento', item)
     }
 
     const SelectItem = (index) => {
-        setItemSelecionado(index)
+        setItemSelected(index)
         setDeleta(true)
     }
 
     const DeleteItem = async () => {
         setDeleta(false)
         try {
-
             setLoading(true)
-            await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelecionado.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
+            await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelected.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
             Alert.alert(
                 'Orçamento excluído com sucesso!',
                 '',
@@ -147,11 +145,10 @@ const Orcamento = (props) => {
         </View>)}
 
         {deleta && (<View style={styles.containerLoading}>
-
             <View style={styles.boxMensagem}>
                 <View>
                     <Text style={styles.mensagem}>
-                        <Text>Confirma Exclusão do Orçamento {itemSelecionado.idOrcamento} ?</Text>
+                        <Text>Confirma Exclusão do Orçamento {itemSelected.idOrcamento} ?</Text>
                     </Text>
                 </View>
 
@@ -169,7 +166,6 @@ const Orcamento = (props) => {
                 </View>
             </View>
         </View>)}
-
         {loading && (<View style={styles.containerLoading}>
             <ActivityIndicator size="large" color={COLORS.red}/>
         </View>)}
@@ -238,7 +234,7 @@ const Orcamento = (props) => {
                 </View>))}
             </ScrollView>
             <View style={styles.footer}>
-                <Button texto={'+ Novo Orçamento'} onPress={() => props.navigation.navigate('Novoorcamento', item)}
+                <Button texto={'+ Novo Orçamento'} onPress={() => navigation.navigate('Novoorcamento')}
                         isLoading={loading}></Button>
             </View>
         </View>

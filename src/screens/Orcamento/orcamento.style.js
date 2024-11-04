@@ -18,9 +18,10 @@ export const styles = {
     },
 
     boxMensagem: {
-        width: '90%',
+        width: '80%',
         height: '20%',
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
+   //     backgroundColor: "rgba(0, 0, 0, 0.3)",
+        backgroundColor: COLORS.white,
         borderWidth: 0.2,
         borderRadius: 6,
     },
@@ -30,13 +31,13 @@ export const styles = {
         alignItems: "center",
         width: '80%',
         margin: 'auto',
-        padding: 10,
+        padding: 8,
         justifyContent: 'space-between',
     },
 
     boxSim:{
         width:'45%',
-        backgroundColor: COLORS.blueNovo,
+        backgroundColor: COLORS.green,
         padding: 10,
         borderRadius: 6,
     },
@@ -49,14 +50,14 @@ export const styles = {
     },
 
     textButton: {
-        fontSize: FONT_SIZE.lg,
+        fontSize: FONT_SIZE.md,
         color: COLORS.white,
         textAlign: "center",
     },
 
     mensagem: {
         marginTop: 30,
-        color: COLORS.white,
+        color: COLORS.blueNovo,
         textAlign: 'center',
         fontSize: 18,
 

@@ -9,12 +9,11 @@ import TextBox from '../../components/textBox/textBox'
 import {Button} from '../../components/button/buton'
 import api from '../../axios-instance'
 import {Orcamento} from '../../models/model.orcamento/model.orcamento'
+import {ConverteValor} from "../../funcoes/funcaoConversao"
 
 const Novoorcamento = (props) => {
 
-    const item = props.route.params
-
-    const {user} = useContext(AuthContext)
+    const {user, item} = useContext(AuthContext)
 
     const [quant, setQuant] = useState('')
     const [descricao, setDescricao] = useState('')
@@ -69,15 +68,6 @@ const Novoorcamento = (props) => {
         setValor(nroFormatado)
     }
 
-    const FormataTotal = (totalItem) => {
-        let vlr = parseFloat(totalItem)
-        vlr = vlr.toFixed(2).replace('.', ',')
-        vlr = parseFloat(vlr.replace(',', '.')).toLocaleString('pt-BR', {
-            minimumFractionDigits: 2, maximumFractionDigits: 2
-        })
-        return vlr
-    }
-
     const StrToDecTotalItem = (und, vlr) => {
         und = parseInt(und)
         vlr = vlr.replace(',', '')
@@ -101,10 +91,10 @@ const Novoorcamento = (props) => {
             vlr_total_item = StrToDecTotalItem(quant, valor)
 
             setTotal(prevTotal => prevTotal + vlr_total_item)  // Corrigido para incrementar corretamente
-            setMostra(FormataTotal(total + vlr_total_item))  // Mostrando o valor atualizado
+            setMostra(ConverteValor(total + vlr_total_item))   // Mostrando o valor atualizado
 
             setData(prevData => [...prevData, {
-                item: id, descricao, quant: parseInt(quant), tipo, valor: vlr_unitario_item, total: vlr_total_item
+                item: id, descricao, quantidade: parseInt(quant), tipo, valor: vlr_unitario_item, total: vlr_total_item
             }])
             setId(prevId => (prevId + 1))
 
@@ -120,7 +110,7 @@ const Novoorcamento = (props) => {
 
     const DeletaItem = (item) => {
         setTotal(prevTotal => prevTotal - item.total)  // Corrigido para subtrair corretamente
-        setMostra(FormataTotal(total - item.total))  // Mostrando o valor atualizado
+        setMostra(ConverteValor(total - item.total))   // Mostrando o valor atualizado
         setData(data.filter(indice => indice.item !== item.item))
     }
 
@@ -133,43 +123,36 @@ const Novoorcamento = (props) => {
         setLabelValor('Vlr')
     }
 
-    const SalvarOrcamento = async () => {
-
-        const idCliente = props.route.params.idCliente
-        const idUsuario = props.route.params.idUsuario
-
+    const SaveOrcamento = async () => {
         //....Monta Objeto para Api
         const orcamento = new Orcamento()
 
-        orcamento.idCliente = idCliente
-        orcamento.idUsuario = idUsuario
+        orcamento.idCliente = item.idCliente
+        orcamento.idUsuario = item.idUsuario
         orcamento.vlrTotal = total
         orcamento.data = new Date().toISOString().split('T')[0]
         orcamento.servico = 'N'
+        orcamento.idOrcamento = 0
         orcamento.items = []
 
-        for (let x = 0; x < data.length; x++) {
-
-            // Itens enviados para Api { descricao, valor, total, quant, tipo }
-            // Não envia o par 'item : nro' - > gerado automaticamente na hora de gravar os dados na Api
+        for (let x = 0; x < data.length; x++) {    // Itens enviados para Api { item, descricao, valor, total, quant, tipo }
             orcamento.items.push({
                 descricao: data[x].descricao,
                 valor: data[x].valor,
                 total: data[x].total,
-                quant: data[x].quant,
-                tipo: data[x].tipo
+                quantidade: data[x].quantidade,
+                tipo: data[x].tipo,
+                item: x + 1
             })
         }
 
         try {
             const response = await api.post('/orcamento/Add', orcamento, {headers: {'Authorization': `Bearer ${user.token}`}})
-
             if (response.status == 201) {
-                Alert.alert('Atenção', 'Registro Gravado com Sucesso...!', [{
+                Alert.alert('Atenção', 'Orçamento gravado com sucesso...!', [{
                     text: 'Ok', onPress: () => navigation.navigate('Orcamento')
                 }])
             }
-
         } catch (error) {
             {
                 Alert.alert('Erro', 'Não foi possível gravar o registro, tente mais tarde!', [{
@@ -177,14 +160,12 @@ const Novoorcamento = (props) => {
                 }])
             }
         }
-
     }
 
     return <View style={styles.container}>
-        <Header />
-
+        <Header/>
         <Titulo titulo={'Novo Orçamento'} image={icones.orca2} back={icones.back} tela={'Orcamento'}
-                navigation={props.navigation} item={item}/>
+                navigation={props.navigation}/>
 
         <View style={styles.containerPrincipal}>
 
@@ -193,7 +174,7 @@ const Novoorcamento = (props) => {
                     Cliente:
                 </Text>
                 <Text style={styles.nome}>
-                    {props.route.params.nome}
+                    {item.nome}
                 </Text>
             </View>
 
@@ -284,34 +265,34 @@ const Novoorcamento = (props) => {
         <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false} ins>
 
             {data.map((item) => (<View key={item.item} style={styles.linha}>
-                    <View style={styles.space35}>
-                        <Text style={styles.textDescricao}>
-                            {item.descricao}
-                        </Text>
-                    </View>
+                <View style={styles.space35}>
+                    <Text style={styles.textDescricao}>
+                        {item.descricao}
+                    </Text>
+                </View>
 
-                    <View style={styles.space20}>
-                        <Text style={styles.textLinha}>
-                            {item.quant}
-                        </Text>
-                    </View>
+                <View style={styles.space20}>
+                    <Text style={styles.textLinha}>
+                        {item.quantidade}
+                    </Text>
+                </View>
 
-                    <View style={styles.space12}>
-                        <Text style={styles.textLinha}>
-                            {item.tipo}
-                        </Text>
-                    </View>
+                <View style={styles.space12}>
+                    <Text style={styles.textLinha}>
+                        {item.tipo}
+                    </Text>
+                </View>
 
-                    <View style={styles.space25}>
-                        <Text style={styles.textValor}>
-                            {FormataTotal(item.valor)}
-                        </Text>
-                    </View>
+                <View style={styles.space25}>
+                    <Text style={styles.textValor}>
+                        {ConverteValor(item.valor)}
+                    </Text>
+                </View>
 
-                    <TouchableOpacity onPress={() => DeletaItem(item)}>
-                        <Image source={icones.deletar} style={styles.logoLixeira}/>
-                    </TouchableOpacity>
-                </View>))}
+                <TouchableOpacity onPress={() => DeletaItem(item)}>
+                    <Image source={icones.deletar} style={styles.logoLixeira}/>
+                </TouchableOpacity>
+            </View>))}
         </ScrollView>
 
         <View style={styles.containerFooter}>
@@ -320,7 +301,7 @@ const Novoorcamento = (props) => {
                     Total: R$ {mostra}
                 </Text>
             </View>
-            <Button texto="Salva Orçamento" onPress={SalvarOrcamento} colorRed={false}
+            <Button texto="Salva Orçamento" onPress={SaveOrcamento} colorRed={false}
                     isLoading={data.length == 0 ? true : false}></Button>
         </View>
     </View>

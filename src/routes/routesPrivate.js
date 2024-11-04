@@ -5,7 +5,7 @@ import Deletarcliente from "../screens/Cliente/Deletarcliente.jsx"
 import Mancliente from "../screens/Cliente/Mancliente.jsx"
 import Novocliente from "../screens/Cliente/Novocliente.jsx"
 import Orcamento from "../screens/Orcamento/Orcamento.jsx"
-import Novoorcamento from "../screens/Orcamento/Novoorcamenteo.jsx"
+import Novoorcamento from "../screens/Orcamento/Novoorcamento.jsx"
 import Listaorcamento from "../screens/Orcamento/Listaorcamento.jsx"
 import DisplayOrcamento from "../screens/Orcamento/DisplayOrcamento.jsx"
 

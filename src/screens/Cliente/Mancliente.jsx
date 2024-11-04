@@ -39,7 +39,7 @@ function Mancliente(props) {
             if (!user.token) {
                 Alert.alert('Erro', 'Não foi possível conectar à API..tente mais tarde', [{
                     text: 'OK',
-                    onPress: () => navigation.navigate('Home')
+                    onPress: () => props.navigation.navigate('Home')
                 }]);
             }
             setLoading(true);
@@ -49,7 +49,7 @@ function Mancliente(props) {
             setLoading(false);
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK',
-                onPress: () => props.navigation.navigate('Home')
+                onPress: () => navigation.navigate('Home')
             }]);
         } finally {
             setLoading(false);
@@ -179,7 +179,7 @@ function Mancliente(props) {
                 {index !== null && <Deletarcliente refresh={() => RefreshData()} />}
 
                 <View style={styles.footer}>
-                    <Button texto='+ Novo Cliente' onPress={() => props.navigation.navigate('Novocliente')} isLoading={loading}></Button>
+                    <Button texto='+ Novo Cliente' onPress={() => navigation.navigate('Novocliente')} isLoading={loading}></Button>
                 </View>
             </View>
         </>
