@@ -51,34 +51,29 @@ export const styles = {
   },
 
   logoTipo: {
-    width: 28,
-    height: 28,
+    width: 25,
+    height: 25,
     marginTop: 14,
     marginLeft: 3,
-    padding: 5,
   },
 
-  logoTipoLixeira: {
-    width: 30,
-    height: 30,
-    marginTop: 6,
-  },
 
   logoNormal: {
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 28,
     marginTop: 6,
-    padding: 5,
+    padding: 12
   },
 
   containerNome: {
-    width: "70%",
+    width: "65%"
   },
 
   containerLogo: {
-    width: "30%",
+    width: "37%",
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingRight: 8,
   },
 
   space60: {

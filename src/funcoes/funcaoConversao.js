@@ -2,18 +2,15 @@ export const ConverteData = (data) => {
     let dataIso = new Date(data)
     const dats = dataIso.toISOString().slice(0, 10)
     const [ano, mes, dia] = dats.split("-")
-    const dataFormatada = `${dia}/${mes}/${ano}`
-    return dataFormatada
+    return `${dia}/${mes}/${ano}`
 }
 
 export const ConverteValor = (valor) => {
-    const valorFormatado = Intl.NumberFormat("pt-BR", {
+    return Intl.NumberFormat("pt-BR", {
         // Devolve o valor sem o R$...
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
     }).format(valor)
-
-    return valorFormatado
 }
 
 export const ComparaData = (dataInicial, dataFinal) => {
@@ -21,7 +18,7 @@ export const ComparaData = (dataInicial, dataFinal) => {
     const mesIni = dataInicial.substring(3, 5)
     const anoIni = dataInicial.substring(6)
 
-    const dataInicio = 99999999 - parseInt(anoIni + mesIni + diaIni)
+    const dataIni = 99999999 - parseInt(anoIni + mesIni + diaIni)
 
     const diaFim = dataFinal.substring(0, 2)
     const mesFim = dataFinal.substring(3, 5)
@@ -29,7 +26,7 @@ export const ComparaData = (dataInicial, dataFinal) => {
 
     const dataFim = 99999999 - parseInt(anoFim + mesFim + diaFim)
 
-    return dataFim <= dataInicio
+    return dataFim <= dataIni
 }
 
 export const FormatDataDate = (data) => {

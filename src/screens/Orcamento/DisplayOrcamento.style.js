@@ -105,7 +105,8 @@ export const styles = {
         marginRight: 8,
         borderColor: COLORS.white,
         marginTop: 8,
-        height: "25%",
+        height: "26%",
+
     },
 
     linha: {
@@ -178,7 +179,7 @@ export const styles = {
     total: {
         flexDirection: "row",
         justifyContent: "flex-end",
-        paddingTop: 5,
+        paddingTop: 20,
     },
 
     textTotal: {

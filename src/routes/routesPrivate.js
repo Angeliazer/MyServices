@@ -8,6 +8,7 @@ import Orcamento from "../screens/Orcamento/Orcamento.jsx"
 import Novoorcamento from "../screens/Orcamento/Novoorcamento.jsx"
 import Listaorcamento from "../screens/Orcamento/Listaorcamento.jsx"
 import DisplayOrcamento from "../screens/Orcamento/DisplayOrcamento.jsx"
+import ServiceClient from "../screens/Servicos/ServiceClient.jsx"
 
 const Stack = createNativeStackNavigator()
 
@@ -82,6 +83,14 @@ function RoutesPrivate() {
             <Stack.Screen
                 name="DisplayOrcamento"
                 component={DisplayOrcamento}
+                options={{
+                    headerShown: false,
+                    animation: 'fade'
+                }}
+            />
+            <Stack.Screen
+                name="ServiceClient"
+                component={ServiceClient}
                 options={{
                     headerShown: false,
                     animation: 'fade'

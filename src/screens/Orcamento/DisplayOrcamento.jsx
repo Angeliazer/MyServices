@@ -18,9 +18,9 @@ const DisplayOrcamento = (props) => {
     const [quant, setQuant] = useState('')
     const [descricao, setDescricao] = useState('')
     const [empreitada, setEmpreitada] = useState(false)
-    const [data, setData] = useState([])
     const [tipo, setTipo] = useState('')
     const [mostra, setMostra] = useState('0,00')
+    const [data, setData] = useState([])
 
     const [total, setTotal] = useState(0.00)
     const [valor, setValor] = useState(0.00)
@@ -43,14 +43,17 @@ const DisplayOrcamento = (props) => {
         const LerOrcamentos = async () => {
 
             try {
-                const response = await api.get('/orcamentos/items', {params: { idOrcamento : `${itemSelected.idOrcamento}`},
-                  headers: {'Authorization': `Bearer ${user.token}`}})
+                const response = await api.get('/orcamentos/items', {
+                    params: {idOrcamento: `${itemSelected.idOrcamento}`},
+                    headers: {'Authorization': `Bearer ${user.token}`}
+                })
+
                 setData(response.data)
                 setTotal(itemSelected.vlrTotal)
                 setMostra(ConverteValor(itemSelected.vlrTotal))
-                setId((itemSelected.length+1))
+                setId((response.data.length + 1))
             } catch (e) {
-                 console.log(e)
+                console.log(e)
             }
         }
         LerOrcamentos()
@@ -155,7 +158,7 @@ const DisplayOrcamento = (props) => {
                 total: data[x].total,
                 quantidade: data[x].quantidade,
                 tipo: data[x].tipo,
-                item: x+1
+                item: x + 1
             })
         }
         try {
@@ -176,13 +179,13 @@ const DisplayOrcamento = (props) => {
     }
 
     return <View style={styles.container}>
-        <Header />
+        <Header/>
 
-        <Titulo titulo={`Orçamento : ${itemSelected.idOrcamento}`} image={icones.orca2} back={icones.back} tela={'Orcamento'}
+        <Titulo titulo={`Orçamento : ${itemSelected.idOrcamento}`} image={icones.orca2} back={icones.back}
+                tela={'Orcamento'}
                 navigation={props.navigation}/>
 
         <View style={styles.containerPrincipal}>
-
             <View style={styles.cliente}>
                 <Text style={styles.titulo}>
                     Cliente:
@@ -272,41 +275,40 @@ const DisplayOrcamento = (props) => {
                     <Text style={styles.text}>+ Adiciona</Text>
                 </TouchableOpacity>
             </View>
-
         </View>
 
+        <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={true}>
 
-        <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
+            {data.map((item) => (
+                <View key={item.item} style={styles.linha}>
+                    <View style={styles.space35}>
+                        <Text style={styles.textDescricao}>
+                            {item.descricao}
+                        </Text>
+                    </View>
 
-            {data.map((item) => (<View key={item.item} style={styles.linha}>
-                <View style={styles.space35}>
-                    <Text style={styles.textDescricao}>
-                        {item.descricao}
-                    </Text>
-                </View>
+                    <View style={styles.space20}>
+                        <Text style={styles.textLinha}>
+                            {item.quantidade}
+                        </Text>
+                    </View>
 
-                <View style={styles.space20}>
-                    <Text style={styles.textLinha}>
-                        {item.quantidade}
-                    </Text>
-                </View>
+                    <View style={styles.space12}>
+                        <Text style={styles.textLinha}>
+                            {item.tipo}
+                        </Text>
+                    </View>
 
-                <View style={styles.space12}>
-                    <Text style={styles.textLinha}>
-                        {item.tipo}
-                    </Text>
-                </View>
+                    <View style={styles.space25}>
+                        <Text style={styles.textValor}>
+                            {ConverteValor(item.valor)}
+                        </Text>
+                    </View>
 
-                <View style={styles.space25}>
-                    <Text style={styles.textValor}>
-                        {ConverteValor(item.valor)}
-                    </Text>
-                </View>
-
-                <TouchableOpacity onPress={() => DeletaItem(item)}>
-                    <Image source={icones.deletar} style={styles.logoLixeira}/>
-                </TouchableOpacity>
-            </View>))}
+                    <TouchableOpacity onPress={() => DeletaItem(item)}>
+                        <Image source={icones.deletar} style={styles.logoLixeira}/>
+                    </TouchableOpacity>
+                </View>))}
         </ScrollView>
 
         <View style={styles.containerFooter}>

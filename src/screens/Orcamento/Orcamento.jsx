@@ -16,11 +16,8 @@ const Orcamento = (props) => {
     const {data, setData, item, user, itemSelected, setItemSelected} = useContext(AuthContext)
 
     const [loading, setLoading] = useState(false)
-
     const [service, setService] = useState(false)
-
     const [deleta, setDeleta] = useState(false)
-
     const navigation = props.navigation
 
     useEffect(() => {
@@ -64,7 +61,7 @@ const Orcamento = (props) => {
             servico.dataFim = null
             servico.situacao = 'A'
             servico.total = itemSelected.vlrTotal
-            servico.saldo = 0.00
+            servico.saldo = itemSelected.vlrTotal
 
             await api.post(`/servicos/add`, servico, {headers: {'Authorization': `Bearer ${user.token}`}})
 
@@ -91,7 +88,7 @@ const Orcamento = (props) => {
 
     const MostraOrcamento = (index) => {
         setItemSelected(index)
-        navigation.navigate('DisplayOrcamento', item)
+        navigation.navigate('DisplayOrcamento')
     }
 
     const SelectItem = (index) => {
@@ -122,7 +119,7 @@ const Orcamento = (props) => {
             <View style={styles.boxMensagem}>
                 <View>
                     <Text style={styles.mensagem}>
-                        Confirma Execução do Serviço?
+                        {`Confirma Conversão do Orçamento\n em Serviço?`}
                     </Text>
                 </View>
                 <View style={styles.boxButton}>
@@ -206,9 +203,9 @@ const Orcamento = (props) => {
 
                             {item.servico === 'N' ?
                                 <TouchableOpacity style={styles.icones} onPress={() => GetItem(item)}>
-                                    <Image source={icones.servico} style={styles.icones}/>
+                                    <Image source={icones.converter} style={styles.icones}/>
                                 </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
-                                    <Image source={icones.servico} style={styles.iconesOpacity}/>
+                                    <Image source={icones.converter} style={styles.iconesOpacity}/>
                                 </TouchableOpacity>}
 
                             {item.servico === 'N' ?
@@ -221,7 +218,7 @@ const Orcamento = (props) => {
                     </View>
                     <View style={styles.boxValor}>
                         <Text style={styles.textData}>
-                            {ConverteData(item.data)}
+                            {item.data ? ConverteData(item.data) : ''}
                         </Text>
                         <Text style={styles.textValor}>
                             Total:{' ' + ConverteValor(item.vlrTotal)}

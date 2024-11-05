@@ -63,7 +63,7 @@ const Home = (props) => {
 
                     <TouchableOpacity>
                         <View style={styles.fotoSlide}>
-                            <Image source={icones.fatura} style={styles.logo}/>
+                            <Image source={icones.fatura4} style={styles.logo}/>
                             <Text style={styles.textFoto}>
                                 Faturamento
                             </Text>

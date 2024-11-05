@@ -2,19 +2,19 @@ import {COLORS, FONT_SIZE} from '../../constants/theme.js'
 
 export const styles = {
 
-    container:{
+    container: {
         flex: 1,
         backgroundColor: COLORS.white,
     },
 
-    contain:{
+    contain: {
         width: '100%',
         flexDirection: 'row',
         paddingLeft: 15,
         paddingRight: 15,
     },
 
-    slideBox:{
+    slideBox: {
         width: '100%',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -25,24 +25,24 @@ export const styles = {
 
     direita: {
         position: 'absolute',
-        top: 190,
+        top: 170,
         right: 10,
-        opacity: 0.6
+        opacity: 0.3
     },
 
     esquerda: {
         position: 'absolute',
-        top: 190,
+        top: 170,
         left: 10,
-        opacity: 0.6
+        opacity: 0.3
     },
 
-    seta:{
+    seta: {
         width: 20,
         height: 20,
     },
 
-    fotoSlide:{
+    fotoSlide: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: COLORS.mediumGray,
@@ -66,13 +66,13 @@ export const styles = {
         height: 60,
     },
 
-    textButton:{
+    textButton: {
         textAlign: 'center',
         fontSize: FONT_SIZE.xm,
         color: COLORS.white
     },
 
-    footer:{
+    footer: {
         position: "absolute",
         bottom: 80,
         width: "100%",

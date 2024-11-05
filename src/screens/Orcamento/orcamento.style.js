@@ -114,11 +114,10 @@ export const styles = {
     },
 
     boxIcones: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '35%',
-        marginLeft: 'auto',
-        justifyContent: 'flex-end',
+        width: "37%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        paddingRight: 8,
     },
 
     boxDados: {
@@ -136,17 +135,19 @@ export const styles = {
     },
 
     icones: {
+        flexDirection: 'row',
         width: 25,
         height: 25,
         justifyContent: 'space-between',
-        margin: 'auto'
+        paddingRight: 10,
+        paddingLeft: 5
     },
 
     iconesOpacity: {
         width: 25,
         height: 25,
         justifyContent: 'space-between',
-        margin: 'auto',
+        padding: 10,
         opacity: 0.5
     },
 
