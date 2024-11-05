@@ -41,5 +41,5 @@ export default {
     clientePlus, back, cart, cliente, configuracoes, deletar, expandir, location, fatura,
     logout, email0, mais, menos, orca1, orca2, pesquisa, servico, cheked, uncheked, editar, user, 
     cliente2, servicos, setaDireita, setaEsquerda, cadeadoAberto, cadeadoFechado, email1, email2, 
-    email3, email4, converter, fatura2, fatura4
+    email3, email4, converter, fatura2, fatura3, fatura4
 }

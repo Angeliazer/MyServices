@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {styles} from './home.style.js'
-import {View, ScrollView, Image, Text, TouchableOpacity, ActivityIndicator} from 'react-native'
+import {View, ScrollView, Image, Text, TouchableOpacity} from 'react-native'
 import Header from '../../components/header/header.jsx'
 import icones from '../../constants/icones.js'
 import {Button} from '../../components/button/buton.jsx'
@@ -9,7 +9,7 @@ import {RemoveStorage} from '../../storage/storage.js'
 
 const Home = (props) => {
 
-    const {user, setUser} = useContext(AuthContext)
+    const {setUser} = useContext(AuthContext)
 
     const Logout = async () => {
         setUser({})

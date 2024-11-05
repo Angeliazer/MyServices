@@ -82,7 +82,7 @@ function Mancliente(props) {
             }
             const response = await api.get(`/clientes/nome/?nome=${nomePesq}`, {headers: {'Authorization': `Bearer ${user.token}`}})
 
-            if (response.data.length == 0) {
+            if (response.data.length === 0) {
                 Alert.alert('Atenção', 'Não existe cliente cadastrado com esse nome..', {
                     text: 'Ok', onPress: setNomePesq('')
                 })
