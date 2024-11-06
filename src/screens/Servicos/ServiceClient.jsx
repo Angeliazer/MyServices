@@ -1,24 +1,26 @@
 import {styles} from './ServiceClient.style.js'
-import {ScrollView, Text, View, Alert, Image, TouchableOpacity} from "react-native"
+import {ScrollView, Text, View, Alert, Image, TouchableOpacity, ActivityIndicator} from "react-native"
 import {AuthContext} from "../../context/Auth"
-import {useContext, useEffect} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import Header from "../../components/header/header"
 import Titulo from "../../components/titulo/titulo"
 import icones from "../../constants/icones"
 import api from "../../axios-instance"
 import {ConverteData, ConverteValor} from "../../funcoes/funcaoConversao"
+import {COLORS} from "../../constants/theme"
 
 const ServiceClient = (props) => {
 
     const {user, item, data, setData} = useContext(AuthContext)
 
+    const [loading, setLoading] = useState(false)
+
     const navigation = props.navigation
 
     useEffect(() => {
-
         const LerServicos = async () => {
-
             try {
+                setLoading(true)
                 const response = await api.get('/servicos/clientes', {
                     params: {idUsuario: `${item.idUsuario}`, idCliente: `${item.idCliente}`},
                     headers: {'Authorization': `Bearer ${user.token}`}
@@ -34,20 +36,21 @@ const ServiceClient = (props) => {
                         }])
                 } else
                     Alert.alert(`${e}`)
+            } finally {
+                setLoading(false)
             }
         }
         LerServicos()
     }, [])
 
-
-    return (
-
+    return (<>
+        {loading && <View style={styles.containerLoading}>
+            <ActivityIndicator size="large" color={COLORS.blueNovo}/>
+        </View>}
         <View style={styles.container}>
             <Header/>
-
-            <Titulo titulo={'Serviços Cliente'} image={icones.cliente} back={icones.back} tela={'Mancliente'}
+            <Titulo titulo={'Serviços Cliente'} image={icones.servico} back={icones.back} tela={'Mancliente'}
                     navigation={navigation}/>
-
             <View style={styles.boxTitulo}>
                 <Text style={styles.text}>
                     Cliente:
@@ -56,7 +59,6 @@ const ServiceClient = (props) => {
                     {' ' + item.nome}
                 </Text>
             </View>
-
             <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
 
                 {data.map((item) => (<View key={item.idOrcamento} style={styles.boxServico}>
@@ -105,20 +107,14 @@ const ServiceClient = (props) => {
                                     Saldo R$ <Text style={styles.textLinhaAzul}> {ConverteValor(item.saldo)} </Text>
                                 </Text>}
                         </View>
-
-
                     </View>
 
 
                 </View>))
                 }
-
-
             </ScrollView>
-
-
         </View>
-    )
+    </>)
 }
 
 export default ServiceClient

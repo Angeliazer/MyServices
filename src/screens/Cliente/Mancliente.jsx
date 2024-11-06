@@ -1,7 +1,7 @@
 import {View, TouchableOpacity, ScrollView, Text, ActivityIndicator, Image, Alert} from 'react-native'
 import {styles} from './mancliente.style.js'
 import Header from '../../components/header/header.jsx'
-import {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import api from '../../axios-instance.js'
 import icones from '../../constants/icones.js'
 import TextBox from '../../components/textBox/textBox.jsx'
@@ -10,6 +10,7 @@ import {AuthContext} from '../../context/Auth.js'
 import Deletarcliente from '../../screens/Cliente/Deletarcliente.jsx'
 import Titulo from "../../components/titulo/titulo.jsx"
 import {COLORS} from '../../constants/theme.js'
+import Loading from "../../components/loading/loading"
 
 function Mancliente(props) {
 
@@ -104,83 +105,80 @@ function Mancliente(props) {
     }
 
     return (<>
-            {loading && (<View style={styles.containerLoading}>
-                    <ActivityIndicator size="large" color={COLORS.red}/>
-                </View>)}
+        {loading && <Loading />}
+        <View style={styles.container}>
+            <Header/>
 
-            <View style={styles.container}>
-                <Header/>
+            <Titulo titulo={'Clientes'} image={icones.cliente} back={icones.back} tela={'Home'}
+                    navigation={navigation}/>
 
-                <Titulo titulo={'Clientes'} image={icones.cliente} back={icones.back} tela={'Home'}
-                        navigation={navigation}/>
-
-                <View style={styles.boxPesquisa}>
-                    <View style={[styles.nome, styles.space90]}>
-                        <TextBox
-                            label=""
-                            placeholder="Nome da Pesquisa"
-                            value={nomePesq}
-                            onChangeText={(e) => {
-                                setNomePesq(e)
-                                if (e === '') {
-                                    LimpaPesquisa(e)
-                                }
-                            }}
-                        />
-                    </View>
-
-                    <View style={styles.space10}>
-                        <TouchableOpacity onPress={PesquisaNome} style={styles.space10}>
-                            <Image source={icones.pesquisa} style={styles.logoTipo}/>
-                        </TouchableOpacity>
-                    </View>
+            <View style={styles.boxPesquisa}>
+                <View style={[styles.nome, styles.space90]}>
+                    <TextBox
+                        label=""
+                        placeholder="Nome da Pesquisa"
+                        value={nomePesq}
+                        onChangeText={(e) => {
+                            setNomePesq(e)
+                            if (e === '') {
+                                LimpaPesquisa(e)
+                            }
+                        }}
+                    />
                 </View>
 
-                <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
-                    {dataCliente.map((item) => (<View key={item.idCliente}>
+                <View style={styles.space10}>
+                    <TouchableOpacity onPress={PesquisaNome} style={styles.space10}>
+                        <Image source={icones.pesquisa} style={styles.logoTipo}/>
+                    </TouchableOpacity>
+                </View>
+            </View>
 
-                            <View style={styles.containerLinha}>
-                                <View style={styles.containerNome}>
-                                    <TouchableOpacity onPress={() => ConsultaCliente(item)}>
-                                        <Text style={styles.linha}>
-                                            {item.nome}
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.containerLogo}>
-                                    {/* <TouchableOpacity onPress={() => NovoOrcamento(item)}>
+            <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
+                {dataCliente.map((item) => (<View key={item.idCliente}>
+
+                    <View style={styles.containerLinha}>
+                        <View style={styles.containerNome}>
+                            <TouchableOpacity onPress={() => ConsultaCliente(item)}>
+                                <Text style={styles.linha}>
+                                    {item.nome}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.containerLogo}>
+                            {/* <TouchableOpacity onPress={() => NovoOrcamento(item)}>
                                         <Image source={icones.orca2} style={styles.logoNormal} />
                                     </TouchableOpacity> */}
 
-                                    <TouchableOpacity onPress={() => Orcamento(item)}>
-                                        <Image source={icones.orca2} style={styles.logoNormal}/>
-                                    </TouchableOpacity>
+                            <TouchableOpacity onPress={() => Orcamento(item)}>
+                                <Image source={icones.orca2} style={styles.logoNormal}/>
+                            </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                                        <Image source={icones.cliente2} style={styles.logoNormal}/>
-                                    </TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                                <Image source={icones.cliente2} style={styles.logoNormal}/>
+                            </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => DelCliente(item)}>
-                                        <Image source={icones.deletar} style={styles.logoNormal}/>
-                                    </TouchableOpacity>
+                            <TouchableOpacity onPress={() => DelCliente(item)}>
+                                <Image source={icones.deletar} style={styles.logoNormal}/>
+                            </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => ServicoCliente(item)}>
-                                        <Image source={icones.servico} style={styles.logoNormal}/>
-                                    </TouchableOpacity>
-                                </View>
+                            <TouchableOpacity onPress={() => ServicoCliente(item)}>
+                                <Image source={icones.servico} style={styles.logoNormal}/>
+                            </TouchableOpacity>
+                        </View>
 
-                            </View>
-                        </View>))}
-                </ScrollView>
+                    </View>
+                </View>))}
+            </ScrollView>
 
-                {index !== null && <Deletarcliente refresh={() => RefreshData()}/>}
+            {index !== null && <Deletarcliente refresh={() => RefreshData()}/>}
 
-                <View style={styles.footer}>
-                    <Button texto="+ Novo Cliente" onPress={() => navigation.navigate('Novocliente')}
-                            isLoading={loading}></Button>
-                </View>
+            <View style={styles.footer}>
+                <Button texto="+ Novo Cliente" onPress={() => navigation.navigate('Novocliente')}
+                        isLoading={loading}></Button>
             </View>
-        </>)
+        </View>
+    </>)
 }
 
 export default Mancliente

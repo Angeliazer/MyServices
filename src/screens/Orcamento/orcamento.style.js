@@ -13,8 +13,8 @@ export const styles = {
         bottom: 0,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // fundo semi-transparente
-        zIndex: 1, // Certifique-se que fica acima do conteúdo
+        backgroundColor: "rgba(255, 255, 0, 0.8)", // fundo semi-transparente
+        zIndex: 10, // Certifique-se que fica acima do conteúdo
     },
 
     boxMensagem: {

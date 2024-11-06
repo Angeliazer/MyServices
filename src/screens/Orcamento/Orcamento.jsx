@@ -10,6 +10,7 @@ import {COLORS} from '../../constants/theme.js'
 import {ConverteData, ConverteValor} from '../../funcoes/funcaoConversao.js'
 import {Button} from '../../components/button/buton.jsx'
 import {Servico} from "../../models/model.servico/model.servico"
+import Loading from "../../components/loading/loading"
 
 const Orcamento = (props) => {
 
@@ -21,7 +22,7 @@ const Orcamento = (props) => {
     const navigation = props.navigation
 
     useEffect(() => {
-        return  navigation.addListener('focus', () => {
+        return navigation.addListener('focus', () => {
             LerOrcamentos()
         })
 
@@ -71,8 +72,8 @@ const Orcamento = (props) => {
                 [{text: 'Ok'}]
             )
             LerOrcamentos()   //Atualiza Tela....
-        } catch (e)  {
-             console.log(e)
+        } catch (e) {
+            console.log(e)
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK', onPress: () => navigation.navigate('Mancliente')
             }])
@@ -100,7 +101,10 @@ const Orcamento = (props) => {
         setDeleta(false)
         try {
             setLoading(true)
-            await api.delete(`/orcamentos/delete`, { params: {idOrcamento : `${itemSelected.idOrcamento}`} ,headers: {'Authorization': `Bearer ${user.token}`}})
+            await api.delete(`/orcamentos/delete`, {
+                params: {idOrcamento: `${itemSelected.idOrcamento}`},
+                headers: {'Authorization': `Bearer ${user.token}`}
+            })
             Alert.alert(
                 'Orçamento excluído com sucesso!',
                 '',
@@ -114,124 +118,120 @@ const Orcamento = (props) => {
         }
     }
 
-    return <View style={styles.container}>
-        {service && (<View style={styles.containerLoading}>
-            <View style={styles.boxMensagem}>
-                <View>
-                    <Text style={styles.mensagem}>
-                        {`Confirma Conversão do Orçamento\n em Serviço?`}
-                    </Text>
-                </View>
-                <View style={styles.boxButton}>
-                    <TouchableOpacity style={styles.boxNao} onPress={() => setService(false)}>
-                        <Text style={styles.textButton}>
-                            Não
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.boxSim} onPress={SaveItem}>
-                        <Text style={styles.textButton}>
-                            Sim
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>)}
-
-        {deleta && (<View style={styles.containerLoading}>
-            <View style={styles.boxMensagem}>
-                <View>
-                    <Text style={styles.mensagem}>
-                        <Text>Confirma Exclusão do Orçamento {itemSelected.idOrcamento} ?</Text>
-                    </Text>
-                </View>
-
-                <View style={styles.boxButton}>
-                    <TouchableOpacity style={styles.boxNao} onPress={() => setDeleta(false)}>
-                        <Text style={styles.textButton}>
-                            Não
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.boxSim} onPress={DeleteItem}>
-                        <Text style={styles.textButton}>
-                            Sim
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>)}
-        {loading && (<View style={styles.containerLoading}>
-            <ActivityIndicator size="large" color={COLORS.red}/>
-        </View>)}
-
+    return<>
+        {loading && <Loading/>}
         <View style={styles.container}>
+            {service && (<View style={styles.containerLoading}>
+                <View style={styles.boxMensagem}>
+                    <View>
+                        <Text style={styles.mensagem}>
+                            {`Confirma Conversão do Orçamento\n em Serviço?`}
+                        </Text>
+                    </View>
+                    <View style={styles.boxButton}>
+                        <TouchableOpacity style={styles.boxNao} onPress={() => setService(false)}>
+                            <Text style={styles.textButton}>
+                                Não
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.boxSim} onPress={SaveItem}>
+                            <Text style={styles.textButton}>
+                                Sim
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>)}
 
-            <Header/>
+            {deleta && (<View style={styles.containerLoading}>
+                <View style={styles.boxMensagem}>
+                    <View>
+                        <Text style={styles.mensagem}>
+                            <Text>Confirma Exclusão do Orçamento {itemSelected.idOrcamento} ?</Text>
+                        </Text>
+                    </View>
 
-            <Titulo titulo={'Orçamentos Cliente'} image={icones.orca2} back={icones.back} tela={'Mancliente'}
-                    navigation={navigation}/>
+                    <View style={styles.boxButton}>
+                        <TouchableOpacity style={styles.boxNao} onPress={() => setDeleta(false)}>
+                            <Text style={styles.textButton}>
+                                Não
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.boxSim} onPress={DeleteItem}>
+                            <Text style={styles.textButton}>
+                                Sim
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>)}
+            <View style={styles.container}>
+                <Header/>
+                <Titulo titulo={'Orçamentos Cliente'} image={icones.orca2} back={icones.back} tela={'Mancliente'}
+                        navigation={navigation}/>
+                <View style={styles.boxTitulo}>
+                    <Text style={styles.text}>
+                        Cliente:
+                    </Text>
+                    <Text style={styles.nome}>
+                        {' ' + item.nome}
+                    </Text>
+                </View>
 
-            <View style={styles.boxTitulo}>
-                <Text style={styles.text}>
-                    Cliente:
-                </Text>
-                <Text style={styles.nome}>
-                    {' ' + item.nome}
-                </Text>
-            </View>
+                <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
+                    {data.map((item) => (<View key={item.idOrcamento} style={styles.containerOrcamento}>
+                        <View style={styles.boxDados}>
+                            <View style={styles.boxData}>
+                                <Text style={styles.textOrca}>
+                                    Os:{' ' + item.idOrcamento}
+                                </Text>
+                            </View>
 
-            <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
-                {data.map((item) => (<View key={item.idOrcamento} style={styles.containerOrcamento}>
-                    <View style={styles.boxDados}>
-                        <View style={styles.boxData}>
-                            <Text style={styles.textOrca}>
-                                Os:{' ' + item.idOrcamento}
+                            <View style={styles.boxIcones}>
+
+                                <TouchableOpacity style={styles.icones}>
+                                    <Image source={icones.email4} style={styles.icones}/>
+                                </TouchableOpacity>
+
+                                {item.servico === 'N' ?
+                                    <TouchableOpacity style={styles.icones} onPress={() => SelectItem(item)}>
+                                        <Image source={icones.deletar} style={styles.icones}/>
+                                    </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
+                                        <Image source={icones.deletar} style={styles.iconesOpacity}/>
+                                    </TouchableOpacity>}
+
+                                {item.servico === 'N' ?
+                                    <TouchableOpacity style={styles.icones} onPress={() => GetItem(item)}>
+                                        <Image source={icones.converter} style={styles.icones}/>
+                                    </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
+                                        <Image source={icones.converter} style={styles.iconesOpacity}/>
+                                    </TouchableOpacity>}
+
+                                {item.servico === 'N' ?
+                                    <TouchableOpacity style={styles.icones} onPress={() => MostraOrcamento(item)}>
+                                        <Image source={icones.expandir} style={styles.icones}/>
+                                    </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
+                                        <Image source={icones.expandir} style={styles.iconesOpacity}/>
+                                    </TouchableOpacity>}
+                            </View>
+                        </View>
+                        <View style={styles.boxValor}>
+                            <Text style={styles.textData}>
+                                {item.data ? ConverteData(item.data) : ''}
+                            </Text>
+                            <Text style={styles.textValor}>
+                                Total:{' ' + ConverteValor(item.vlrTotal)}
                             </Text>
                         </View>
-
-                        <View style={styles.boxIcones}>
-
-                            <TouchableOpacity style={styles.icones}>
-                                <Image source={icones.email4} style={styles.icones}/>
-                            </TouchableOpacity>
-
-                            {item.servico === 'N' ?
-                                <TouchableOpacity style={styles.icones} onPress={() => SelectItem(item)}>
-                                    <Image source={icones.deletar} style={styles.icones}/>
-                                </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
-                                    <Image source={icones.deletar} style={styles.iconesOpacity}/>
-                                </TouchableOpacity>}
-
-                            {item.servico === 'N' ?
-                                <TouchableOpacity style={styles.icones} onPress={() => GetItem(item)}>
-                                    <Image source={icones.converter} style={styles.icones}/>
-                                </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
-                                    <Image source={icones.converter} style={styles.iconesOpacity}/>
-                                </TouchableOpacity>}
-
-                            {item.servico === 'N' ?
-                                <TouchableOpacity style={styles.icones} onPress={() => MostraOrcamento(item)}>
-                                    <Image source={icones.expandir} style={styles.icones}/>
-                                </TouchableOpacity> : <TouchableOpacity style={styles.icones} disabled={true}>
-                                    <Image source={icones.expandir} style={styles.iconesOpacity}/>
-                                </TouchableOpacity>}
-                        </View>
-                    </View>
-                    <View style={styles.boxValor}>
-                        <Text style={styles.textData}>
-                            {item.data ? ConverteData(item.data) : ''}
-                        </Text>
-                        <Text style={styles.textValor}>
-                            Total:{' ' + ConverteValor(item.vlrTotal)}
-                        </Text>
-                    </View>
-                </View>))}
-            </ScrollView>
-            <View style={styles.footer}>
-                <Button texto={'+ Novo Orçamento'} onPress={() => navigation.navigate('Novoorcamento')}
-                        isLoading={loading}></Button>
+                    </View>))}
+                </ScrollView>
+                <View style={styles.footer}>
+                    <Button texto={'+ Novo Orçamento'} onPress={() => navigation.navigate('Novoorcamento')}
+                            isLoading={loading}></Button>
+                </View>
             </View>
         </View>
-    </View>
+    </>
 }
 
 export default Orcamento

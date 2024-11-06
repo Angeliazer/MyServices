@@ -6,12 +6,23 @@ export const styles = {
         backgroundColor: COLORS.white,
     },
 
+    containerLoading: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(255,255, 0, 0.5)", // fundo semi-transparente
+        zIndex: 1, // Certifique-se que fica acima do conteúdo
+    },
+
     mensagem: {
         marginTop: 30,
         color: COLORS.blueNovo,
         textAlign: 'center',
         fontSize: 18,
-
     },
 
     text: {
@@ -89,18 +100,19 @@ export const styles = {
     },
 
     boxLinhaTres: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
 
     boxSituacao: {
-        width: '50%',
+        width: '61%',
         justifyContent: 'flex-start'
     },
 
     boxSaldo: {
         flexDirection: 'row',
-        width: '50%',
+        width: '40%',
         justifyContent: 'flex-end'
     },
 
@@ -119,7 +131,7 @@ export const styles = {
         paddingBottom: 5
     },
 
-    textOs:{
+    textOs: {
         fontSize: FONT_SIZE.md,
         paddingRight: 5,
     },
