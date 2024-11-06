@@ -1,4 +1,4 @@
-import {View, TouchableOpacity, ScrollView, Text, ActivityIndicator, Image, Alert} from 'react-native'
+import {View, TouchableOpacity, ScrollView, Text, Image, Alert} from 'react-native'
 import {styles} from './mancliente.style.js'
 import Header from '../../components/header/header.jsx'
 import React, {useEffect, useState, useContext} from 'react'
@@ -9,7 +9,6 @@ import {Button} from '../../components/button/buton.jsx'
 import {AuthContext} from '../../context/Auth.js'
 import Deletarcliente from '../../screens/Cliente/Deletarcliente.jsx'
 import Titulo from "../../components/titulo/titulo.jsx"
-import {COLORS} from '../../constants/theme.js'
 import Loading from "../../components/loading/loading"
 
 function Mancliente(props) {
@@ -22,7 +21,6 @@ function Mancliente(props) {
     const {dataCliente, setDataCliente, index, setIndex, setModalVisible, setItem, user} = useContext(AuthContext)
 
     useEffect(() => {
-
         const fetchData = async () => {
             await LerClientes()
         }

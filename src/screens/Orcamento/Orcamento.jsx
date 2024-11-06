@@ -1,4 +1,4 @@
-import {ScrollView, Text, View, ActivityIndicator, Image, TouchableOpacity, Alert} from 'react-native'
+import {ScrollView, Text, View, Image, TouchableOpacity, Alert} from 'react-native'
 import {styles} from './orcamento.style.js'
 import {useContext, useEffect, useState} from 'react'
 import Header from '../../components/header/header.jsx'
@@ -6,7 +6,6 @@ import Titulo from '../../components/titulo/titulo.jsx'
 import icones from '../../constants/icones.js'
 import {AuthContext} from '../../context/Auth.js'
 import api from '../../axios-instance.js'
-import {COLORS} from '../../constants/theme.js'
 import {ConverteData, ConverteValor} from '../../funcoes/funcaoConversao.js'
 import {Button} from '../../components/button/buton.jsx'
 import {Servico} from "../../models/model.servico/model.servico"
