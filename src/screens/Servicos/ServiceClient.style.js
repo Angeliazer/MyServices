@@ -6,18 +6,6 @@ export const styles = {
         backgroundColor: COLORS.white,
     },
 
-    containerLoading: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(255,255, 0, 0.5)", // fundo semi-transparente
-        zIndex: 1, // Certifique-se que fica acima do conteúdo
-    },
-
     mensagem: {
         marginTop: 30,
         color: COLORS.blueNovo,
@@ -106,13 +94,13 @@ export const styles = {
     },
 
     boxSituacao: {
-        width: '61%',
+        width: '45%',
         justifyContent: 'flex-start'
     },
 
     boxSaldo: {
         flexDirection: 'row',
-        width: '40%',
+        width: '56%',
         justifyContent: 'flex-end'
     },
 

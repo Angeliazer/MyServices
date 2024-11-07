@@ -5,17 +5,17 @@ export const styles = {
         width: "100%",
     },
 
-    containerLoading: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // fundo semi-transparente
-        zIndex: 1, // Certifique-se que fica acima do conteúdo
-    },
+    // containerLoading: {
+    //     position: "absolute",
+    //     top: 0,
+    //     left: 0,
+    //     right: 0,
+    //     bottom: 0,
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     backgroundColor: "rgba(0, 0, 0, 0.5)", // fundo semi-transparente
+    //     zIndex: 1, // Certifique-se que fica acima do conteúdo
+    // },
 
     containerPesquisa: {
         flexDirection: "row",

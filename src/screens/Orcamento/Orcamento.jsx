@@ -29,12 +29,12 @@ const Orcamento = (props) => {
 
     const LerOrcamentos = async () => {
         try {
+            setLoading(true)
             if (!user.token) {
                 Alert.alert('Erro', 'Problemas com o Token de Autenticação...!', [{
                     text: 'OK', onPress: () => navigation.navigate('Mancliente')
                 }])
             }
-            setLoading(true)
             const response = await api.get(`/orcamentos/clientes/${item.idCliente}`, {headers: {'Authorization': `Bearer ${user.token}`}})
 
             response.data.sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data da maior para a menor
@@ -62,9 +62,7 @@ const Orcamento = (props) => {
             servico.situacao = 'A'
             servico.total = itemSelected.vlrTotal
             servico.saldo = itemSelected.vlrTotal
-
-            await api.post(`/servicos/add`, servico, {headers: {'Authorization': `Bearer ${user.token}`}})
-
+            await api.post(`/servicos/add`, servico)
             Alert.alert(
                 'Atenção.',
                 'Orçamento Convertido em Serviço com sucesso!',
@@ -101,8 +99,7 @@ const Orcamento = (props) => {
         try {
             setLoading(true)
             await api.delete(`/orcamentos/delete`, {
-                params: {idOrcamento: `${itemSelected.idOrcamento}`},
-                headers: {'Authorization': `Bearer ${user.token}`}
+                params: {idOrcamento: `${itemSelected.idOrcamento}`}
             })
             Alert.alert(
                 'Orçamento excluído com sucesso!',

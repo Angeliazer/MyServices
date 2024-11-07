@@ -8,11 +8,11 @@ import icones from "../../constants/icones"
 import api from "../../axios-instance"
 import {ConverteData, ConverteValor} from "../../funcoes/funcaoConversao"
 import {COLORS} from "../../constants/theme"
+import Loading from "../../components/loading/loading"
 
 const ServiceClient = (props) => {
 
-    const {user, item, data, setData} = useContext(AuthContext)
-
+    const {item, data, setData} = useContext(AuthContext)
     const [loading, setLoading] = useState(false)
 
     const navigation = props.navigation
@@ -22,8 +22,7 @@ const ServiceClient = (props) => {
             try {
                 setLoading(true)
                 const response = await api.get('/servicos/clientes', {
-                    params: {idUsuario: `${item.idUsuario}`, idCliente: `${item.idCliente}`},
-                    headers: {'Authorization': `Bearer ${user.token}`}
+                    params: {idUsuario: `${item.idUsuario}`, idCliente: `${item.idCliente}`}
                 })
                 setData(response.data)
             } catch (e) {
@@ -44,9 +43,10 @@ const ServiceClient = (props) => {
     }, [])
 
     return (<>
-        {loading && <View style={styles.containerLoading}>
-            <ActivityIndicator size="large" color={COLORS.blueNovo}/>
-        </View>}
+        {/*{loading && <View style={styles.containerLoading}>*/}
+        {/*    <ActivityIndicator size="large" color={COLORS.blueNovo}/>*/}
+        {/*</View>}*/}
+        {loading && <Loading />}
         <View style={styles.container}>
             <Header/>
             <Titulo titulo={'Serviços Cliente'} image={icones.servico} back={icones.back} tela={'Mancliente'}

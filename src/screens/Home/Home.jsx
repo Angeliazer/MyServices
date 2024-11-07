@@ -6,6 +6,7 @@ import icones from '../../constants/icones.js'
 import {Button} from '../../components/button/buton.jsx'
 import {AuthContext} from '../../context/Auth.js'
 import {RemoveStorage} from '../../storage/storage.js'
+import api from "../../axios-instance"
 
 const Home = (props) => {
 
@@ -14,6 +15,7 @@ const Home = (props) => {
     const Logout = async () => {
         setUser({})
         await RemoveStorage('usuario')
+        delete api.defaults.headers.common['Authorization']
         props.navigation.navigate('Login')
     }
 

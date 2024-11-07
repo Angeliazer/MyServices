@@ -145,8 +145,8 @@ const Novoorcamento = (props) => {
         }
 
         try {
-            const response = await api.post('/orcamento/Add', orcamento, {headers: {'Authorization': `Bearer ${user.token}`}})
-            if (response.status == 201) {
+            const response = await api.post('/orcamento/Add', orcamento)
+            if (response.status === 201) {
                 Alert.alert('Atenção', 'Orçamento gravado com sucesso...!', [{
                     text: 'Ok', onPress: () => navigation.navigate('Orcamento')
                 }])

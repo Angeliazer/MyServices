@@ -6,7 +6,7 @@ import React from "react"
 const Loading = () => {
 
     return<View style={styles.containerLoading}>
-        <ActivityIndicator size="large" color={COLORS.blueNovo}/>
+        <ActivityIndicator size="small" color={COLORS.blue}/>
     </View>
 
 }

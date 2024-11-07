@@ -13,24 +13,19 @@ import Loading from "../../components/loading/loading"
 
 function Mancliente(props) {
 
+    const navigation = props.navigation
     const [loading, setLoading] = useState(false)
     const [nomePesq, setNomePesq] = useState('')
-
-    const navigation = props.navigation
-
-    const {dataCliente, setDataCliente, index, setIndex, setModalVisible, setItem, user} = useContext(AuthContext)
+    const {dataClient, setDataClient, index, setIndex, setModalVisible, setItem, user} = useContext(AuthContext)
 
     useEffect(() => {
         const fetchData = async () => {
             await LerClientes()
         }
-
         navigation.addListener('focus', () => {
             setNomePesq('')
             fetchData()
         })
-
-        // Limpar o listener ao desmontar o componente
     }, [navigation])
 
     const LerClientes = async () => {
@@ -41,10 +36,9 @@ function Mancliente(props) {
                 }])
             }
             setLoading(true)
-            const response = await api.get('/clientes', {headers: {'Authorization': `Bearer ${user.token}`}})
-            setDataCliente(response.data)
+            const response = await api.get('/clientes')
+            setDataClient(response.data)
         } catch (error) {
-            setLoading(false)
             Alert.alert('Erro', 'Não foi possível conectar à API. Verifique sua conexão ou tente mais tarde.', [{
                 text: 'OK', onPress: () => navigation.navigate('Home')
             }])
@@ -106,10 +100,8 @@ function Mancliente(props) {
         {loading && <Loading />}
         <View style={styles.container}>
             <Header/>
-
             <Titulo titulo={'Clientes'} image={icones.cliente} back={icones.back} tela={'Home'}
                     navigation={navigation}/>
-
             <View style={styles.boxPesquisa}>
                 <View style={[styles.nome, styles.space90]}>
                     <TextBox
@@ -133,7 +125,7 @@ function Mancliente(props) {
             </View>
 
             <ScrollView style={styles.containerScroll} showsVerticalScrollIndicator={false}>
-                {dataCliente.map((item) => (<View key={item.idCliente}>
+                {dataClient.map((item) => (<View key={item.idCliente}>
 
                     <View style={styles.containerLinha}>
                         <View style={styles.containerNome}>
@@ -144,22 +136,15 @@ function Mancliente(props) {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.containerLogo}>
-                            {/* <TouchableOpacity onPress={() => NovoOrcamento(item)}>
-                                        <Image source={icones.orca2} style={styles.logoNormal} />
-                                    </TouchableOpacity> */}
-
                             <TouchableOpacity onPress={() => Orcamento(item)}>
                                 <Image source={icones.orca2} style={styles.logoNormal}/>
                             </TouchableOpacity>
-
                             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                                 <Image source={icones.cliente2} style={styles.logoNormal}/>
                             </TouchableOpacity>
-
                             <TouchableOpacity onPress={() => DelCliente(item)}>
                                 <Image source={icones.deletar} style={styles.logoNormal}/>
                             </TouchableOpacity>
-
                             <TouchableOpacity onPress={() => ServicoCliente(item)}>
                                 <Image source={icones.servico} style={styles.logoNormal}/>
                             </TouchableOpacity>

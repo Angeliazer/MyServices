@@ -10,6 +10,7 @@ import api from '../../axios-instance.js'
 import {ConverteData, ConverteValor, FormatDataDate} from '../../funcoes/funcaoConversao.js'
 import Filtrodata from '../../components/filtrodata/Filtrodata.jsx'
 import {Button} from '../../components/button/buton.jsx'
+import Loading from "../../components/loading/loading"
 
 const Listaorcamento = (props) => {
 
@@ -38,7 +39,7 @@ const Listaorcamento = (props) => {
                 }])
             }
             setLoading(true)
-            const response = await api.get(`/orcamentos/`, {headers: {'Authorization': `Bearer ${user.token}`}})
+            const response = await api.get(`/orcamentos/`)
 
             response.data.sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data da maior para a menor
             setDataOrcamento(response.data)
@@ -77,22 +78,16 @@ const Listaorcamento = (props) => {
 
             setLoading(true)
             const response = await api.get(`/orcamentos/datas`, {
-                params: {dataInicial: dataI, dataFinal: dataF},
-                headers: {'Authorization': `Bearer ${user.token}`}
+                params: {dataInicial: dataI, dataFinal: dataF}
             })
-
-            response.data.sort((a, b) => new Date(b.data) - new Date(a.data)) //ordena por data da maior para a menor
+            response.data.sort((a, b) => new Date(b.data) - new Date(a.data))
             setDataOrcamento(response.data)
-
         } catch (error) {
-
             console.log(error)
-
         } finally {
             setLoading(false)
         }
     }
-
 
     function Voltar() {
         setDatavalida(true)
@@ -100,12 +95,7 @@ const Listaorcamento = (props) => {
 
     return (
         <>
-            {loading && (
-                <View style={styles.containerLoading}>
-                    <ActivityIndicator size="large" color={COLORS.red}/>
-                </View>
-            )}
-
+            {loading && <Loading/>}
             {!datavalida &&
                 <View style={styles.boxDataInvalida}>
                     <View style={styles.boxDataModal}>
@@ -123,7 +113,7 @@ const Listaorcamento = (props) => {
                 </View>
             }
 
-            <View style={styles.container}>
+            <View style={[styles.container, loading && {opacity: 0.9} ] }>
                 <Header texto={apelido}/>
                 <Titulo titulo={'Orçamentos'} image={icones.orca2} back={icones.back} tela={'Home'}
                         navigation={navigation}/>

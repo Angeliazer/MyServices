@@ -1,7 +1,7 @@
-import {createNativeStackNavigator} from "@react-navigation/native-stack"
-import Login from "../screens/Login/Login.jsx"
-import Criarconta from "../screens/Criarconta/Criarconta.jsx"
-import Codigo from "../screens/Codigo/Codigo.jsx"
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import Login from '../screens/Login/Login.jsx'
+import Criarconta from '../screens/Criarconta/Criarconta.jsx'
+import Codigo from '../screens/Codigo/Codigo.jsx'
 
 const Stack = createNativeStackNavigator()
 
@@ -16,7 +16,6 @@ function RoutesOpen() {
                     animation: 'fade'
                 }}
             />
-
             <Stack.Screen
                 name="Criarconta"
                 component={Criarconta}
@@ -25,7 +24,6 @@ function RoutesOpen() {
                     animation: 'fade'
                 }}
             />
-
             <Stack.Screen
                 name="Codigo"
                 component={Codigo}

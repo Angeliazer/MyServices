@@ -9,7 +9,7 @@ export const styles = {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "rgba(255, 255, 0, 0.8)", // fundo semi-transparente
-        zIndex: 1000,
+        zIndex: 999,
     },
 
 }

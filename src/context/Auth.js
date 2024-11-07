@@ -4,7 +4,7 @@ export const AuthContext = createContext()
 
 function AuthProvider({children}) {
     const [data, setData] = useState([])
-    const [dataCliente, setDataCliente] = useState([])
+    const [dataClient, setDataClient] = useState([])
     const [dataOrcamento, setDataOrcamento] = useState([])
     const [modalVisible, setModalVisible] = useState(false)
     const [index, setIndex] = useState(null)
@@ -29,9 +29,9 @@ function AuthProvider({children}) {
                 setNome,
                 item,
                 setItem,
-                dataCliente,
+                dataClient,
                 dataOrcamento,
-                setDataCliente,
+                setDataClient,
                 setDataOrcamento,
                 user,
                 setUser,

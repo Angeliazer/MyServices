@@ -44,8 +44,7 @@ const DisplayOrcamento = (props) => {
 
             try {
                 const response = await api.get('/orcamentos/items', {
-                    params: {idOrcamento: `${itemSelected.idOrcamento}`},
-                    headers: {'Authorization': `Bearer ${user.token}`}
+                    params: {idOrcamento: `${itemSelected.idOrcamento}`}
                 })
 
                 setData(response.data)
@@ -162,7 +161,7 @@ const DisplayOrcamento = (props) => {
             })
         }
         try {
-            const response = await api.put('/orcamentos/update', orcamento, {headers: {'Authorization': `Bearer ${user.token}`}})
+            const response = await api.put('/orcamentos/update', orcamento)
 
             if (response.status === 200) {
                 Alert.alert('Atenção', 'Orçamento Atualizado com Sucesso...!', [{
