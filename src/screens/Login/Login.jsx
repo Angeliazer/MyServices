@@ -6,7 +6,7 @@ import TextBox from '../../components/textBox/textBox.jsx'
 import {AuthContext} from '../../context/Auth.js'
 import api from '../../axios-instance.js'
 import {Button} from '../../components/button/buton.jsx'
-import {SaveStorage, LoadStorage} from '../../storage/storage.js'
+import {SaveStorage} from '../../storage/storage.js'
 import icones from '../../constants/icones.js'
 import {User} from "../../models/model.user/model.user"
 
