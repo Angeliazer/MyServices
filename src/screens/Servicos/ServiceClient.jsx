@@ -1,5 +1,5 @@
 import {styles} from './ServiceClient.style.js'
-import {ScrollView, Text, View, Alert, Image, TouchableOpacity, ActivityIndicator} from "react-native"
+import {ScrollView, Text, View, Alert, Image, TouchableOpacity} from "react-native"
 import {AuthContext} from "../../context/Auth"
 import React, {useContext, useEffect, useState} from "react"
 import Header from "../../components/header/header"
@@ -7,7 +7,6 @@ import Titulo from "../../components/titulo/titulo"
 import icones from "../../constants/icones"
 import api from "../../axios-instance"
 import {ConverteData, ConverteValor} from "../../funcoes/funcaoConversao"
-import {COLORS} from "../../constants/theme"
 import Loading from "../../components/loading/loading"
 
 const ServiceClient = (props) => {

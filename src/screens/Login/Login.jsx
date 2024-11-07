@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {View, Text, ScrollView, TouchableOpacity, Alert, Image} from 'react-native'
+import React, {useContext, useState} from 'react'
+import {View, Text, TouchableOpacity, Alert, Image} from 'react-native'
 import {styles} from './login.style.js'
 import Header from '../../components/header/header.jsx'
 import TextBox from '../../components/textBox/textBox.jsx'
@@ -16,7 +16,7 @@ function Login(props) {
     const [password, setPassword] = useState('Rigon216')
     const [loading, setLoading] = useState(false)
     const [seguranca, setSeguranca] = useState(true)
-    const {setUser, user} = useContext(AuthContext)
+    const {setUser} = useContext(AuthContext)
 
     async function ProcessaLogin() {
 
@@ -50,18 +50,11 @@ function Login(props) {
         }
     }
 
-    async function StorageApp() {
-        const user = await LoadStorage()
-        console.log(user)
-    }
-
     const Seguranca = () => {
         setSeguranca(!seguranca)
     }
 
-    const NovaSenha = () => {
 
-    }
 
     return (
         <View style={styles.container}>

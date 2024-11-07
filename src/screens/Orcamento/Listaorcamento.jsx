@@ -1,8 +1,7 @@
 import {styles} from './listaorcamento.style'
 import icones from '../../constants/icones'
 import Header from '../../components/header/header.jsx'
-import {View, ActivityIndicator, Text, ScrollView, Image, Alert, Keyboard} from 'react-native'
-import {COLORS} from '../../constants/theme.js'
+import {View, Text, ScrollView, Image, Alert} from 'react-native'
 import Titulo from '../../components/titulo/titulo.jsx'
 import {useState, useContext, useEffect} from 'react'
 import {AuthContext} from '../../context/Auth.js'
@@ -22,7 +21,7 @@ const Listaorcamento = (props) => {
 
     const navigation = props.navigation
 
-    const data = (new Date().toLocaleString('pt-BR')).substring(0, 10)
+    //const data = (new Date().toLocaleString('pt-BR')).substring(0, 10)
 
     useEffect(() => {
         setDataInicial('')

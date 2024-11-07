@@ -13,7 +13,7 @@ import {ConverteValor} from "../../funcoes/funcaoConversao"
 
 const Novoorcamento = (props) => {
 
-    const {user, item} = useContext(AuthContext)
+    const {item} = useContext(AuthContext)
 
     const [quant, setQuant] = useState('')
     const [descricao, setDescricao] = useState('')
@@ -84,7 +84,7 @@ const Novoorcamento = (props) => {
     }
 
     const AdicionaOrc = () => {
-        if (descricao != '' && valor != '' && quant != '' && tipo != '') {
+        if (descricao !== '' && valor !== 0 && quant !== '' && tipo !== '') {
 
             vlr_unitario_item = StrToDec(valor)
             vlr_total_item = StrToDecTotalItem(quant, valor)
@@ -298,7 +298,7 @@ const Novoorcamento = (props) => {
                 </Text>
             </View>
             <Button texto="Salva Orçamento" onPress={SaveOrcamento} colorRed={false}
-                    isLoading={data.length == 0 ? true : false}></Button>
+                    isLoading={data.length === 0 && true}></Button>
         </View>
     </View>
 }

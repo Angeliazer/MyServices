@@ -13,7 +13,7 @@ import TextBox from "../../components/textBox/textBox"
 
 const DisplayOrcamento = (props) => {
 
-    const {user, item, itemSelected} = useContext(AuthContext)
+    const {item, itemSelected} = useContext(AuthContext)
 
     const [quant, setQuant] = useState('')
     const [descricao, setDescricao] = useState('')
